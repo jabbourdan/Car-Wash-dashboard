@@ -31,6 +31,10 @@ const routes: Routes = [
       {
         path: 'sample-page',
         loadComponent: () => import('./demo/others/sample-page/sample-page.component').then((c) => c.SamplePageComponent)
+      },
+      {
+        path: 'allPartners',
+        loadComponent: () => import('./components/all-partners/all-partners.component').then((c) => c.AllPartnersComponent)
       }
     ]
   },

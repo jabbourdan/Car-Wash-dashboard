@@ -36,6 +36,25 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+  //partner
+  {
+    id: 'partner',
+    title: 'Partners',
+    type: 'group',
+    icon: 'icon-partner',
+    children: [
+      {
+        id: 'allPartners',
+        title: 'All Partners',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/allPartners',
+        icon: 'partners',
+        breadcrumbs: false
+      }
+    ]
+  },
+
   {
     id: 'authentication',
     title: 'Authentication',
