@@ -7,15 +7,12 @@ import { AdminComponent } from './theme/layouts/admin-layout/admin-layout.compon
 import { GuestLayoutComponent } from './theme/layouts/guest-layout/guest-layout.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: '',
     component: AdminComponent,
     children: [
-      {
-        path: '',
-        redirectTo: '/dashboard/default',
-        pathMatch: 'full'
-      },
+  
       {
         path: 'dashboard/default',
         loadComponent: () => import('./demo/dashboard/default/default.component').then((c) => c.DefaultComponent)
