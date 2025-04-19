@@ -52,8 +52,23 @@
           <td>{{ partner.name }}</td>
           <td>{{ partner.email }}</td>
           <td>{{ partner.phoneNumber }}</td>
-          <td>status</td>
-          <td>info</td>
+          <td>
+            <button (click)="toggleSuspend(partner)" 
+                    [ngClass]="{
+                      'approve': partner.isSuspended === null,
+                      'suspend': partner.isSuspended === true,
+                      'reactivate': partner.isSuspended === false
+                    }" 
+                    class="status-btn">
+              {{ getStatusLabel(partner.isSuspended) }}
+            </button>
+          </td>
+          
+          
+          <td>
+            <i class="material-icons info-icon" (click)="showPartnerInfo(partner)" title="More info">info</i>
+          </td>
+          
         </tr>
       </tbody>
       

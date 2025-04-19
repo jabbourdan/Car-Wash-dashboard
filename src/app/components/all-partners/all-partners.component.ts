@@ -75,5 +75,36 @@ toggleSort(column: string) {
     this.sortDirection = 'asc';
   }
 }
+//status
+getStatusLabel(isSuspended: boolean | null): string {
+  if (isSuspended === null) {
+    return 'Approve'; // If isSuspended is null, display "Approve"
+  }
+  return isSuspended ? 'Reactivate' : 'Suspend';
+}
+
+
+toggleSuspend(partner: Partners): void {
+  const updatedSuspend = partner.isSuspended === true ? false : true;
+
+  this.partnerService.suspendUser(partner.id, updatedSuspend).subscribe({
+    next: () => {
+      partner.isSuspended = updatedSuspend; // Update the partner's suspension status
+      this.getAllPartners();
+    },
+    error: (err) => {
+      console.error('Failed to change suspend status', err);
+      this.getAllPartners();
+    }
+  });
+  this.getAllPartners();
+}
+
+
+
+//info
+showPartnerInfo(row){
+
+}
 
 }

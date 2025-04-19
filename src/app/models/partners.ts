@@ -4,6 +4,7 @@ export class Partners {
     public name?: string;
     public email?: string;
     public phoneNumber?: string;
+    public isSuspended?:boolean
   }
 
   

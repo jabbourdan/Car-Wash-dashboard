@@ -49,6 +49,80 @@ table {
     box-shadow: 0 0 8px rgba(30, 136, 229, 0.5); /* Glowing blue effect */
   }
   
+  .info-icon {
+    color: #1976d2;
+    cursor: pointer;
+    font-size: 24px;
+    transition: color 0.2s ease;
+  }
   
+  .info-icon:hover {
+    color: #0d47a1;
+  }
+  .approve {
+    background-color: yellow;
+    color: black; /* Adjust text color if necessary */
+  }
+  
+  .suspend {
+    background-color: green;
+    color: white;
+  }
+  
+  .reactivate {
+    background-color: red;
+    color: white;
+  }
+  /* General button styles */
+.status-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover and Focus Effects */
+.status-btn:hover,
+.status-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Approve state (Yellow) */
+.approve {
+  background-color: #f4e300; /* Bright yellow */
+  color: #333;
+}
+
+.approve:hover {
+  background-color: #e4d200; /* Darker yellow on hover */
+}
+
+/* Suspend state (Green) */
+.suspend {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+.suspend:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+/* Reactivate state (Red) */
+.reactivate {
+  background-color: #dc3545; /* Red */
+  color: white;
+}
+
+.reactivate:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
 
 }
