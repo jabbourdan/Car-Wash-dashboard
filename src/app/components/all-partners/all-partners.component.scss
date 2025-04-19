@@ -30,4 +30,25 @@ table {
     overflow-x: auto;
   }
 
+
+  input[type="text"] {
+    width: 258px;
+    max-width: 600px; /* Increased width */
+    padding: 12px 18px;
+    font-size: 16px;
+    border: 2px solid #1976d2; /* Blue border */
+    border-radius: 8px;
+    outline: none;
+    background-color: #ffffff; /* White background */
+    color: #333; /* Dark text */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  input[type="text"]:focus {
+    border-color: #1e88e5; /* Darker blue on focus */
+    box-shadow: 0 0 8px rgba(30, 136, 229, 0.5); /* Glowing blue effect */
+  }
+  
+  
+
 }
