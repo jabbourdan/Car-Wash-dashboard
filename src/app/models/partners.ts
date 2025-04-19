@@ -1,5 +1,5 @@
 export class Partners {
-    public id?: number;
+    public id?: string;
     public photoUrl?: string;
     public name?: string;
     public email?: string;

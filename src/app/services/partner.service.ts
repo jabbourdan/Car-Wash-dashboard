@@ -36,15 +36,17 @@ export class PartnerService {
   }
   
   
-  suspendUser(userId: number, isSuspended: boolean) {
+  suspendUser(userId: string, isSuspended: boolean) {
     const params = new HttpParams()
-      .set('userId', userId.toString()) // Convert userId to string
-      .set('isSuspended', isSuspended.toString()); // Convert isSuspended to string
-    
+      .set('userId', userId)
+      .set('isSuspended', isSuspended.toString());
+  
     return this.http.post<any[]>(this.apiUrlSuspend, {}, { 
       headers: this.getAuthHeaders(), 
       params: params // Attach params here
     });
   }
+  
+  
   
 }
