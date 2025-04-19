@@ -11,7 +11,7 @@ export class PartnerService {
 
   private apiUrl = '/api/administrator/getAllPartners';
   private apiUrlSuspend = '/api/administrator/suspendUser';
-
+  private apiUrlPartnerExtraDetails = '/api/administrator/getPartnerExtraDetails';
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
@@ -46,6 +46,15 @@ export class PartnerService {
       params: params // Attach params here
     });
   }
+  
+ 
+
+  getPartnerExtraDetails(partnerId: string) {
+    const url = `${this.apiUrlPartnerExtraDetails}?partnerId=${partnerId}`;
+    return this.http.post<any>(url, {}, { headers: this.getAuthHeaders() });
+  }
+  
+  
   
   
   

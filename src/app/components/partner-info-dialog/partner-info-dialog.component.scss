@@ -1,0 +1,60 @@
+/* Style for dialog title */
+.dialog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  /* Style for dialog content */
+  .dialog-content {
+    padding: 15px;
+  }
+  
+  /* Style for making text bold */
+  .bold-text {
+    font-weight: bold;
+  }
+  
+  /* Button styles */
+  .toggle-btn {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  /* Color for Extra Details button (green) */
+  .extra-details {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  /* Color for Less Details button (red) */
+  .less-details {
+    background-color: #f44336;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  /* Style for extra details content */
+  .extra-details-content {
+    margin-top: 10px;
+  }
+  
+  /* Close button */
+  .close-btn {
+    padding: 10px 15px;
+    background-color: #888;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .close-btn:hover {
+    background-color: #555;
+  }
+  

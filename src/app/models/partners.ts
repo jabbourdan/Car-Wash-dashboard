@@ -5,6 +5,7 @@ export class Partners {
     public email?: string;
     public phoneNumber?: string;
     public isSuspended?:boolean
+    public isPhoneVerified?:boolean
   }
 
   

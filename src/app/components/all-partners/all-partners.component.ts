@@ -4,6 +4,8 @@ import { Partners } from 'src/app/models/partners';
 import { CommonModule } from '@angular/common';
 import { PartnerService } from 'src/app/services/partner.service';
 import { FormsModule } from '@angular/forms';
+import { PartnerInfoDialogComponent } from '../partner-info-dialog/partner-info-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -20,7 +22,7 @@ export class AllPartnersComponent {
 
   constructor(
     private partnerService:PartnerService,
-
+    private dialog: MatDialog,
     private router:Router
 
 ) { }
@@ -103,8 +105,24 @@ toggleSuspend(partner: Partners): void {
 
 
 //info
-showPartnerInfo(row){
+showPartnerInfo(partner: Partners): void {
+  const dialogRef = this.dialog.open(PartnerInfoDialogComponent, {
+    data: partner,  // Pass the partner data to the dialog
+    width: '700px', // You can change to '80%', '900px', etc.
+    height: 'auto', // Optional: can also use '600px' or '80vh'
+    maxHeight: '90vh' // To avoid going off screen
+  });
 
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('Dialog was closed');
+  });
 }
+// openPartnerInfoDialog(partner: Partners): void {
+//   this.dialog.open(PartnerInfoDialogComponent, {
+//     data: partner,
+//     width: '600px'
+//   });
+// }
+
 
 }

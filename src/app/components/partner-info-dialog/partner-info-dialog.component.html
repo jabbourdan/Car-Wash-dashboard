@@ -1,0 +1,31 @@
+<h2 class="dialog-title">Partner Information</h2>
+
+<div class="dialog-content">
+  <div class="partner-info">
+    <img [src]="partner.photoUrl" alt="Partner Photo" class="partner-photo"/>
+    
+    <p><strong class="bold-text">Name:</strong> {{ partner.name }}</p>
+    <p><strong class="bold-text">Email:</strong> {{ partner.email }}</p>
+    <p><strong class="bold-text">Phone:</strong> {{ partner.phoneNumber }}</p>
+    <p><strong class="bold-text">Verified phone:</strong> {{ partner.isPhoneVerified }}</p>
+    <p><strong class="bold-text">Regions:</strong> </p>
+
+    <button 
+      class="toggle-btn"
+      [ngClass]="showExtraDetails ? 'less-details' : 'extra-details'"
+      (click)="toggleExtraDetails()">
+      {{ showExtraDetails ? 'Less Details' : 'Extra Details' }}
+    </button>
+
+    <div *ngIf="showExtraDetails" class="extra-details-content">
+      <p><strong class="bold-text">NickName:</strong> {{ partnerExtraDetails?.nickName || 'N/A' }}</p>
+      <p><strong class="bold-text">Preferred Phone Number:</strong> {{ partnerExtraDetails?.preferredPhoneNumber || 'N/A' }}</p>
+      <p><strong class="bold-text">Locale:</strong> {{ partnerExtraDetails?.locale || 'N/A' }}</p>
+      <p><strong class="bold-text">Is Phone Verified:</strong> {{ partnerExtraDetails?.isPhoneVerified || 'N/A' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="dialog-actions">
+  <button class="close-btn" (click)="onClose()">Close</button>
+</div>
