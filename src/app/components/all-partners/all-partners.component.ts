@@ -109,7 +109,7 @@ showPartnerInfo(partner: Partners): void {
   const dialogRef = this.dialog.open(PartnerInfoDialogComponent, {
     data: partner,  // Pass the partner data to the dialog
     width: '700px', // You can change to '80%', '900px', etc.
-    height: 'auto', // Optional: can also use '600px' or '80vh'
+    height: '600px', // Optional: can also use '600px' or '80vh'
     maxHeight: '90vh' // To avoid going off screen
   });
 

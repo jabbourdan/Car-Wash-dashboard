@@ -2,14 +2,23 @@
 
 <div class="dialog-content">
   <div class="partner-info">
-    <img [src]="partner.photoUrl" alt="Partner Photo" class="partner-photo"/>
-    
+    <div class="photo-container">
+        <img [src]="partner.photoUrl" alt="Partner Photo" class="partner-photo" />
+      </div>
+          
     <p><strong class="bold-text">Name:</strong> {{ partner.name }}</p>
     <p><strong class="bold-text">Email:</strong> {{ partner.email }}</p>
     <p><strong class="bold-text">Phone:</strong> {{ partner.phoneNumber }}</p>
     <p><strong class="bold-text">Verified phone:</strong> {{ partner.isPhoneVerified }}</p>
-    <p><strong class="bold-text">Regions:</strong> </p>
-
+    <p><strong class="regions">Regions:</strong> </p>
+    <div *ngFor="let region of regionsList" class="region-block">
+        <div class="region-row">
+          <p><strong class="bold-text">Country Code:</strong> {{ region.countryCode }}</p>
+          <p><strong class="bold-text">Country:</strong> {{ region.country }}</p>
+          <p><strong class="bold-text">City:</strong> {{ region.city }}</p>
+        </div>
+      </div>
+      
     <button 
       class="toggle-btn"
       [ngClass]="showExtraDetails ? 'less-details' : 'extra-details'"
