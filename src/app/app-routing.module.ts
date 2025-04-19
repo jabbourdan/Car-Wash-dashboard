@@ -23,16 +23,6 @@ const routes: Routes = [
         canActivate: [AuthGuard] 
       },
       {
-        path: 'typography',
-        loadComponent: () => import('./demo/component/basic-component/color/color.component').then((c) => c.ColorComponent),
-        canActivate: [AuthGuard] 
-      },
-      {
-        path: 'color',
-        loadComponent: () => import('./demo/component/basic-component/typography/typography.component').then((c) => c.TypographyComponent),
-        canActivate: [AuthGuard] 
-      },
-      {
         path: 'sample-page',
         loadComponent: () => import('./demo/others/sample-page/sample-page.component').then((c) => c.SamplePageComponent),
         canActivate: [AuthGuard] 
