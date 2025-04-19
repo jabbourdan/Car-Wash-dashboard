@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ExtraPackageDetails } from 'src/app/models/extraPackageDetails';
 import { PartnerExtraDetails } from 'src/app/models/partnerExtraDetails';
+import { PartnerPackage } from 'src/app/models/partnerPackage';
 import { Partners } from 'src/app/models/partners';
 import { Regions } from 'src/app/models/regions';
 import { PartnerService } from 'src/app/services/partner.service';
@@ -16,6 +18,7 @@ export class PartnerInfoDialogComponent {
 
   partnerExtraDetails: PartnerExtraDetails = new PartnerExtraDetails();
   regionsList: Array<Regions>=[];
+  partnerPackagesList: Array<PartnerPackage>=[];
   showExtraDetails: boolean = false;
 
   constructor(
@@ -27,6 +30,7 @@ export class PartnerInfoDialogComponent {
 
 ngOnInit(): void {
   this.getPartnerExtraDetails();
+  this.gePartnerPackage();
 }
 
 
@@ -39,7 +43,6 @@ ngOnInit(): void {
   
   //extra details
   getPartnerExtraDetails(): void {
-    console.log("here"+this.partner.id)
     this.partnerService.getPartnerExtraDetails(this.partner.id).subscribe({
       next: (data) => {
         this.partnerExtraDetails=data;
@@ -56,5 +59,19 @@ ngOnInit(): void {
   
   toggleExtraDetails(): void {
     this.showExtraDetails = !this.showExtraDetails;
+  }
+
+
+  //partner Packages
+  gePartnerPackage(): void {
+    this.partnerService.gePartnerPackage(this.partner.id).subscribe({
+      next: (data) => {
+        this.partnerPackagesList=data;
+        console.log('partnerPackagesList:', data);
+      },
+      error: (err) => {
+        console.error('Failed to load partners:', err);
+      }
+    });
   }
 }

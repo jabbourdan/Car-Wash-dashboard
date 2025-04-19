@@ -18,6 +18,7 @@
           <p><strong class="bold-text">City:</strong> {{ region.city }}</p>
         </div>
       </div>
+ 
       
     <button 
       class="toggle-btn"
@@ -34,7 +35,24 @@
     </div>
   </div>
 </div>
-
+       <!-- Packages Cards Section -->
+       <div class="packages-container">
+        <h3>Packages</h3>
+        <div class="package-card" *ngFor="let pkg of partnerPackagesList">
+          <h4>{{ pkg.packageName }}</h4>
+          <p><strong>Vat:</strong> {{ pkg.vat }}</p>
+          <p><strong>Country:</strong> {{ pkg.country }} {{ pkg.countryCode }}</p>
+          <p><strong>City:</strong> {{ pkg.city}}</p>
+          <p><strong>Currency:</strong> {{ pkg.currency}}</p>
+          <p><strong>Duration:</strong> {{ pkg.extraDetails.duration}}</p>
+          <p><strong>package Description:</strong> {{ pkg.extraDetails.packageDescription}}</p>
+          <p><strong>Private Cars:</strong> {{ pkg.extraDetails.PrivateCars}}</p>
+          <p><strong>Vans Or Similar:</strong> {{ pkg.extraDetails.VansOrSimilar}}</p>
+          <p><strong>SUVs:</strong> {{ pkg.extraDetails.SUVs}}</p>
+          <p><strong>Number Of Services:</strong> {{ pkg.extraDetails.numberOfServices}}</p>
+          <p><strong>Caravans:</strong> {{ pkg.extraDetails.caravans}}</p>
+        </div>
+      </div>
 <div class="dialog-actions">
   <button class="close-btn" (click)="onClose()">Close</button>
 </div>
