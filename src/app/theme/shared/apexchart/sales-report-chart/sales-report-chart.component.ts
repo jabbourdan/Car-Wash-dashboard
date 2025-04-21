@@ -51,9 +51,7 @@ export class SalesReportChartComponent {
           useSeriesColors: false
         },
         markers: {
-          width: 10,
-          height: 10,
-          radius: 50
+          strokeWidth: 10
         },
         itemMargin: {
           horizontal: 15,

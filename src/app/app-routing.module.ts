@@ -16,21 +16,25 @@ const routes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-  
       {
         path: 'dashboard/default',
         loadComponent: () => import('./demo/dashboard/default/default.component').then((c) => c.DefaultComponent),
-        canActivate: [AuthGuard] 
+        canActivate: [AuthGuard]
       },
       {
         path: 'sample-page',
         loadComponent: () => import('./demo/others/sample-page/sample-page.component').then((c) => c.SamplePageComponent),
-        canActivate: [AuthGuard] 
+        canActivate: [AuthGuard]
       },
       {
         path: 'allPartners',
         loadComponent: () => import('./components/all-partners/all-partners.component').then((c) => c.AllPartnersComponent),
-        canActivate: [AuthGuard] 
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'reservation',
+        loadComponent: () => import('./components/reservation/reservation.component').then((c) => c.ReservationComponent),
+        canActivate: [AuthGuard]
       }
     ]
   }

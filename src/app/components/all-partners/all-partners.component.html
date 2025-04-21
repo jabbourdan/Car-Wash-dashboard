@@ -7,71 +7,68 @@
 </div> -->
 <div class="form-group mb-0 d-flex align-items-center">
   <i class="search f-12" antIcon type="search" theme="outline"></i>
-  <input type="search" class="form-control border-0 shadow-none" placeholder="Search by name, email or phone" 
-  [(ngModel)]="searchTerm"/>
+  <input type="search" class="form-control border-0 shadow-none" placeholder="Search by name, email or phone"
+    [(ngModel)]="searchTerm" />
 </div>
 
 
 
 <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Photo</th>
-          <th (click)="toggleSort('name')">
-            Name
-            <span *ngIf="sortColumn === 'name'">
-              {{ sortDirection === 'asc' ? '↑' : '↓' }}
-            </span>
-          </th>
-          <th (click)="toggleSort('email')">
-            Email
-            <span *ngIf="sortColumn === 'email'">
-              {{ sortDirection === 'asc' ? '↑' : '↓' }}
-            </span>
-          </th>
-          
-          <th (click)="toggleSort('phoneNumber')">
-            Phone Number
-            <span *ngIf="sortColumn === 'phoneNumber'">
-              {{ sortDirection === 'asc' ? '↑' : '↓' }}
-            </span>
-          </th>
-          <th>Status</th>
-          <th>Info</th>
-        </tr>
-      </thead>
-    
-      <tbody>
-        <tr *ngFor="let partner of filteredAndSortedPartners; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>
-            <img [src]="partner.photoUrl" alt="Photo" width="40" height="40" />
-          </td>
-          <td>{{ partner.name }}</td>
-          <td>{{ partner.email }}</td>
-          <td>{{ partner.phoneNumber }}</td>
-          <td>
-            <button (click)="toggleSuspend(partner)" 
-                    [ngClass]="{
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Photo</th>
+        <th (click)="toggleSort('name')">
+          Name
+          <span *ngIf="sortColumn === 'name'">
+            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+          </span>
+        </th>
+        <th (click)="toggleSort('email')">
+          Email
+          <span *ngIf="sortColumn === 'email'">
+            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+          </span>
+        </th>
+
+        <th (click)="toggleSort('phoneNumber')">
+          Phone Number
+          <span *ngIf="sortColumn === 'phoneNumber'">
+            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+          </span>
+        </th>
+        <th>Status</th>
+        <th>Info</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let partner of filteredAndSortedPartners; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <img [src]="partner.photoUrl" alt="Photo" width="40" height="40" />
+        </td>
+        <td>{{ partner.name }}</td>
+        <td>{{ partner.email }}</td>
+        <td>{{ partner.phoneNumber }}</td>
+        <td>
+          <button (click)="toggleSuspend(partner)" [ngClass]="{
                       'approve': partner.isSuspended === null,
                       'suspend': partner.isSuspended === true,
                       'reactivate': partner.isSuspended === false
-                    }" 
-                    class="status-btn">
-              {{ getStatusLabel(partner.isSuspended) }}
-            </button>
-          </td>
-          
-          
-          <td>
-            <i class="material-icons info-icon" (click)="showPartnerInfo(partner)" title="More info">info</i>
-          </td>
-          
-        </tr>
-      </tbody>
-      
-    </table>
-  </div>
-  
+                    }" class="status-btn">
+            {{ getStatusLabel(partner.isSuspended) }}
+          </button>
+        </td>
+
+
+        <td>
+          <i class="material-icons info-icon" (click)="showPartnerInfo(partner)" title="More info">info</i>
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+</div>

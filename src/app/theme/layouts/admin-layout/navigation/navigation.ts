@@ -53,6 +53,23 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       }
     ]
+  },
+  {
+    id: 'Reservation',
+    title: 'Reservation',
+    type: 'group',
+    icon: 'icon-eservation',
+    children: [
+      {
+        id: 'allPartners',
+        title: 'Reservations',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/reservation',
+        icon: 'reservation',
+        breadcrumbs: false
+      }
+    ]
   }
 
   // {

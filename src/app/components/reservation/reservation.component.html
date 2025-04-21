@@ -1,0 +1,26 @@
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Status</th>
+                <th>Arrival Time</th>
+                <th>Partner Name</th>
+                <th>Total Price</th>
+                <th>Transaction Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let reservation of reservations; let i = index">
+                <td>{{ reservation.number }}</td>
+                <td>{{ reservation.customer?.name }}</td>
+                <td>{{ reservation.statusText }}</td>
+                <td>{{ reservation.arrivalTimeTo }}</td>
+                <td>{{ reservation.assignedPartner?.name }}</td>
+                <td>{{ reservation.totalItemsPrice | currency }}</td>
+                <td>{{ reservation.totalTransactionsAmount | currency }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

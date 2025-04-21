@@ -6,11 +6,12 @@ import { PartnerService } from 'src/app/services/partner.service';
 import { FormsModule } from '@angular/forms';
 import { PartnerInfoDialogComponent } from '../partner-info-dialog/partner-info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { ReservationService } from 'src/app/services/reservation.service';
+import { Reservation } from 'src/app/models/reservation';
 
 @Component({
   selector: 'app-all-partners',
-  imports: [CommonModule,FormsModule ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './all-partners.component.html',
   styleUrl: './all-partners.component.scss'
 })
@@ -21,108 +22,113 @@ export class AllPartnersComponent {
   sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(
-    private partnerService:PartnerService,
+    private partnerService: PartnerService,
     private dialog: MatDialog,
-    private router:Router
+    private router: Router,
+    private reservationService: ReservationService
+  ) {}
+  reservations: Reservation[] = [];
 
-) { }
-
-ngOnInit(): void {
-  this.getAllPartners();
-}
-
-getAllPartners(): void {
-  this.partnerService.getAllPartners().subscribe({
-    next: (data) => {
-      this.partnersList = data;
-      console.log('Partners:', this.partnersList);
-    },
-    error: (err) => {
-      console.error('Failed to load partners:', err);
-    }
-  });
-}
-
-get filteredAndSortedPartners(): Partners[] {
-  let filtered = this.partnersList;
-
-  if (this.searchTerm) {
-    const term = this.searchTerm.toLowerCase();
-    filtered = filtered.filter(p =>
-      p.name?.toLowerCase().includes(term) ||
-      p.email?.toLowerCase().includes(term) ||
-      p.phoneNumber?.toLowerCase().includes(term)
-    );
+  ngOnInit(): void {
+    this.getAllPartners();
+    this.loadReservations();
+    console.log(this.reservations);
   }
-
-  if (this.sortColumn) {
-    filtered = filtered.sort((a, b) => {
-      const valA = (a as any)[this.sortColumn]?.toLowerCase?.() || '';
-      const valB = (b as any)[this.sortColumn]?.toLowerCase?.() || '';
-      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-      return 0;
+  loadReservations(): void {
+    this.reservationService.getAllReservations().subscribe({
+      next: (res) => {
+        this.reservations = res;
+        console.log('Loaded reservations:', this.reservations);
+      },
+      error: (err) => {
+        console.error('Failed to load reservations:', err);
+      }
+    });
+  }
+  getAllPartners(): void {
+    this.partnerService.getAllPartners().subscribe({
+      next: (data) => {
+        this.partnersList = data;
+        console.log('Partners:', this.partnersList);
+      },
+      error: (err) => {
+        console.error('Failed to load partners:', err);
+      }
     });
   }
 
-  return filtered;
-}
+  get filteredAndSortedPartners(): Partners[] {
+    let filtered = this.partnersList;
 
-
-toggleSort(column: string) {
-  if (this.sortColumn === column) {
-    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-  } else {
-    this.sortColumn = column;
-    this.sortDirection = 'asc';
-  }
-}
-//status
-getStatusLabel(isSuspended: boolean | null): string {
-  if (isSuspended === null) {
-    return 'Approve'; // If isSuspended is null, display "Approve"
-  }
-  return isSuspended ? 'Reactivate' : 'Suspend';
-}
-
-
-toggleSuspend(partner: Partners): void {
-  const updatedSuspend = partner.isSuspended === true ? false : true;
-
-  this.partnerService.suspendUser(partner.id, updatedSuspend).subscribe({
-    next: () => {
-      partner.isSuspended = updatedSuspend; // Update the partner's suspension status
-      this.getAllPartners();
-    },
-    error: (err) => {
-      console.error('Failed to change suspend status', err);
-      this.getAllPartners();
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (p) => p.name?.toLowerCase().includes(term) || p.email?.toLowerCase().includes(term) || p.phoneNumber?.toLowerCase().includes(term)
+      );
     }
-  });
-  this.getAllPartners();
-}
 
+    if (this.sortColumn) {
+      filtered = filtered.sort((a, b) => {
+        const valA = (a as any)[this.sortColumn]?.toLowerCase?.() || '';
+        const valB = (b as any)[this.sortColumn]?.toLowerCase?.() || '';
+        if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
 
+    return filtered;
+  }
 
-//info
-showPartnerInfo(partner: Partners): void {
-  const dialogRef = this.dialog.open(PartnerInfoDialogComponent, {
-    data: partner,  // Pass the partner data to the dialog
-    width: '700px', // You can change to '80%', '900px', etc.
-    height: '600px', // Optional: can also use '600px' or '80vh'
-    maxHeight: '90vh' // To avoid going off screen
-  });
+  toggleSort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+  }
+  //status
+  getStatusLabel(isSuspended: boolean | null): string {
+    if (isSuspended === null) {
+      return 'Approve'; // If isSuspended is null, display "Approve"
+    }
+    return isSuspended ? 'Reactivate' : 'Suspend';
+  }
 
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('Dialog was closed');
-  });
-}
-// openPartnerInfoDialog(partner: Partners): void {
-//   this.dialog.open(PartnerInfoDialogComponent, {
-//     data: partner,
-//     width: '600px'
-//   });
-// }
+  toggleSuspend(partner: Partners): void {
+    const updatedSuspend = partner.isSuspended === true ? false : true;
 
+    this.partnerService.suspendUser(partner.id, updatedSuspend).subscribe({
+      next: () => {
+        partner.isSuspended = updatedSuspend; // Update the partner's suspension status
+        this.getAllPartners();
+      },
+      error: (err) => {
+        console.error('Failed to change suspend status', err);
+        this.getAllPartners();
+      }
+    });
+    this.getAllPartners();
+  }
 
+  //info
+  showPartnerInfo(partner: Partners): void {
+    const dialogRef = this.dialog.open(PartnerInfoDialogComponent, {
+      data: partner, // Pass the partner data to the dialog
+      width: '700px', // You can change to '80%', '900px', etc.
+      height: '600px', // Optional: can also use '600px' or '80vh'
+      maxHeight: '90vh' // To avoid going off screen
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Dialog was closed');
+    });
+  }
+  // openPartnerInfoDialog(partner: Partners): void {
+  //   this.dialog.open(PartnerInfoDialogComponent, {
+  //     data: partner,
+  //     width: '600px'
+  //   });
+  // }
 }
