@@ -6,8 +6,6 @@ import { PartnerService } from 'src/app/services/partner.service';
 import { FormsModule } from '@angular/forms';
 import { PartnerInfoDialogComponent } from '../partner-info-dialog/partner-info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ReservationService } from 'src/app/services/reservation.service';
-import { Reservation } from 'src/app/models/reservation';
 
 @Component({
   selector: 'app-all-partners',
@@ -24,27 +22,13 @@ export class AllPartnersComponent {
   constructor(
     private partnerService: PartnerService,
     private dialog: MatDialog,
-    private router: Router,
-    private reservationService: ReservationService
+    private router: Router
   ) {}
-  reservations: Reservation[] = [];
 
   ngOnInit(): void {
     this.getAllPartners();
-    this.loadReservations();
-    console.log(this.reservations);
   }
-  loadReservations(): void {
-    this.reservationService.getAllReservations().subscribe({
-      next: (res) => {
-        this.reservations = res;
-        console.log('Loaded reservations:', this.reservations);
-      },
-      error: (err) => {
-        console.error('Failed to load reservations:', err);
-      }
-    });
-  }
+
   getAllPartners(): void {
     this.partnerService.getAllPartners().subscribe({
       next: (data) => {
