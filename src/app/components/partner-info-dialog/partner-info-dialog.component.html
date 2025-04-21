@@ -35,24 +35,40 @@
     </div>
   </div>
 </div>
-       <!-- Packages Cards Section -->
-       <div class="packages-container">
-        <h3>Packages</h3>
-        <div class="package-card" *ngFor="let pkg of partnerPackagesList">
-          <h4>{{ pkg.packageName }}</h4>
-          <p><strong>Vat:</strong> {{ pkg.vat }}</p>
-          <p><strong>Country:</strong> {{ pkg.country }} {{ pkg.countryCode }}</p>
-          <p><strong>City:</strong> {{ pkg.city}}</p>
-          <p><strong>Currency:</strong> {{ pkg.currency}}</p>
-          <p><strong>Duration:</strong> {{ pkg.extraDetails.duration}}</p>
-          <p><strong>package Description:</strong> {{ pkg.extraDetails.packageDescription}}</p>
-          <p><strong>Private Cars:</strong> {{ pkg.extraDetails.PrivateCars}}</p>
-          <p><strong>Vans Or Similar:</strong> {{ pkg.extraDetails.VansOrSimilar}}</p>
-          <p><strong>SUVs:</strong> {{ pkg.extraDetails.SUVs}}</p>
-          <p><strong>Number Of Services:</strong> {{ pkg.extraDetails.numberOfServices}}</p>
-          <p><strong>Caravans:</strong> {{ pkg.extraDetails.caravans}}</p>
-        </div>
+  <!-- Packages Cards Section -->
+<div class="packages-container">
+  <h3>Packages</h3>
+  <div class="package-card" *ngFor="let pkg of partnerPackagesList">
+    <h4>{{ pkg.packageName }}</h4>
+
+    <p><strong>Vat:</strong> {{ pkg.vat }}</p>
+    <p><strong>Country:</strong> {{ pkg.country }} {{ pkg.countryCode }}</p>
+    <p><strong>City:</strong> {{ pkg.city }}</p>
+    <p><strong>Currency:</strong> {{ pkg.currency }}</p>
+    <p><strong>Duration:</strong> {{ pkg.extraDetails.duration }}</p>
+    <p><strong>Package Description:</strong> {{ pkg.extraDetails.packageDescription }}</p>
+    <p><strong>Private Cars:</strong> {{ pkg.extraDetails.PrivateCars }}</p>
+    <p><strong>Vans Or Similar:</strong> {{ pkg.extraDetails.VansOrSimilar }}</p>
+    <p><strong>SUVs:</strong> {{ pkg.extraDetails.SUVs }}</p>
+    <p><strong>Number Of Services:</strong> {{ pkg.extraDetails.numberOfServices }}</p>
+
+    <!-- Show raw questions array as a string (optional) -->
+    <!-- <p><strong>Raw Questions:</strong> {{ pkg.questions }}</p> -->
+
+    <!-- Questions Section -->
+    <div *ngIf="pkg.questions?.length">
+      <h5>Questions:</h5>
+      <div *ngFor="let question of pkg.questions; let i = index" class="question-block">
+        <p><strong>#{{ i + 1 }}</strong></p>
+        <p><strong>Text:</strong> {{ question.text }}</p>
+        <p><strong>Type:</strong> {{ question.type }}</p>
+        <p><strong>Expected Answer:</strong> {{ question.expectedAnswer }}</p>
+        <p><strong>Mandatory:</strong> {{ question.mandatory ? 'Yes' : 'No' }}</p>
       </div>
+    </div>
+  </div>
+</div>
+
 <div class="dialog-actions">
   <button class="close-btn" (click)="onClose()">Close</button>
 </div>

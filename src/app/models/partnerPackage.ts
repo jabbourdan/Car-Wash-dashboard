@@ -1,4 +1,5 @@
 import { ExtraPackageDetails } from "./extraPackageDetails";
+import { Question } from "./question";
 
 export class PartnerPackage {
     public id?: string;
@@ -9,6 +10,8 @@ export class PartnerPackage {
     public city?: string;
     public currency?:string;
     public extraDetails?: ExtraPackageDetails;
+    public questions?:Question[];
+          
 
     
   }
