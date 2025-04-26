@@ -7,7 +7,9 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiBaseUrl = 'https://api.wosh.co.il/api/authorization/administrator/login';
+  // private apiBaseUrl = 'https://api.wosh.co.il/api/authorization/administrator/login';
+   private apiBaseUrl = 'https://wosh-dev.herokuapp.com/api/authorization/administrator/login';
+  
   private loggedIn = false;  // Updated authentication status
   
   constructor(private http: HttpClient) { }

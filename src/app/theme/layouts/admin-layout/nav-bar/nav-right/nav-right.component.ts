@@ -1,6 +1,6 @@
 // angular import
 import { Component, inject, input, output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 // project import
 
@@ -27,6 +27,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -42,7 +43,7 @@ export class NavRightComponent {
   windowWidth: number;
   screenFull: boolean = true;
 
-  constructor() {
+  constructor(private authService: AuthService, private router: Router) {
     this.windowWidth = window.innerWidth;
     this.iconService.addIcon(
       ...[
@@ -108,4 +109,12 @@ export class NavRightComponent {
       title: 'History'
     }
   ];
+
+
+
+  logout(): void {
+    this.authService.logout();    
+    localStorage.removeItem('authToken');      
+    this.router.navigate(['/login']);    
+  }
 }

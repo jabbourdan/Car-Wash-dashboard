@@ -6,20 +6,21 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   private isAuthenticated = false;
   
-  // Simulated login method
-  login() {
-    // Implement actual login logic using HTTP requests to authenticate
-    this.isAuthenticated = true;
-  }
-  
-  // Simulated logout method
-  logout() {
-    // Implement actual logout logic
-    this.isAuthenticated = false;
-  }
-  
-  // Method to check login status
+  private tokenKey = 'authToken';
+
   isLoggedIn(): boolean {
-    return this.isAuthenticated;
+    return !!localStorage.getItem(this.tokenKey);
+  }
+
+  login(token: string) {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
   }
 }
