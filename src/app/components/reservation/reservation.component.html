@@ -1,25 +1,50 @@
+<div class="form-group mb-0 d-flex align-items-center" style="margin-bottom: 20px;">
+    <input type="search" class="form-control border-0 shadow-none"
+        placeholder="Search by number, customer name or partner name" [(ngModel)]="searchTerm" />
+</div>
+
 <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>#</th>
-                <th>Customer Name</th>
-                <th>Status</th>
+                <th (click)="toggleSort('number')">
+                    Number
+                    <span *ngIf="sortColumn === 'number'">
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
                 <th>Arrival Time</th>
-                <th>Partner Name</th>
-                <th>Total Price</th>
-                <th>Transaction Amount</th>
+                <th (click)="toggleSort('customer.name')">
+                    Customer Name
+                    <span *ngIf="sortColumn === 'customer.name'">
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
+                <th (click)="toggleSort('totalItemsPrice')">
+                    Total Price
+                    <span *ngIf="sortColumn === 'totalItemsPrice'">
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
+                <th>Total Transactions</th>
+                <th>Status</th>
+                <th (click)="toggleSort('assignedPartners.0.name')">
+                    Partner
+                    <span *ngIf="sortColumn === 'assignedPartners.0.name'">
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let reservation of reservations; let i = index">
-                <td>{{ reservation.number }}</td>
-                <td>{{ reservation.customer?.name }}</td>
-                <td>{{ reservation.statusText }}</td>
-                <td>{{ reservation.arrivalTimeTo }}</td>
-                <td>{{ reservation.assignedPartner?.name }}</td>
-                <td>{{ reservation.totalItemsPrice | currency }}</td>
-                <td>{{ reservation.totalTransactionsAmount | currency }}</td>
+            <tr *ngFor="let res of filteredAndSortedReservations">
+                <td>{{ res.number }}</td>
+                <td>{{ res.arrivalTimeFrom }}</td>
+                <td>{{ res.customer?.name }}</td>
+                <td>{{ res.totalItemsPrice }}</td>
+                <td>{{ res.totalTransactionsAmount }}</td>
+                <td>{{ res.lastReservationEvents?.statusText }}</td>
+                <td>{{ res.assignedPartners?.[0]?.name || 'N/A' }}</td>
             </tr>
         </tbody>
     </table>

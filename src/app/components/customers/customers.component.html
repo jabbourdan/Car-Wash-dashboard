@@ -1,0 +1,60 @@
+<!-- Search Bar -->
+<div class="form-group mb-3 d-flex align-items-center">
+    <i class="search f-12" antIcon type="search" theme="outline"></i>
+    <input type="search" class="form-control border-0 shadow-none" placeholder="Search by name, email or phone"
+        [(ngModel)]="searchText" />
+</div>
+
+<!-- Table -->
+<div class="table-container" *ngIf="!isLoading; else loading">
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th (click)="toggleSort('name')">
+                    Name
+                    <span *ngIf="sortField === 'name'">
+                        {{ ascending ? '↑' : '↓' }}
+                    </span>
+                </th>
+                <th (click)="toggleSort('email')">
+                    Email
+                    <span *ngIf="sortField === 'email'">
+                        {{ ascending ? '↑' : '↓' }}
+                    </span>
+                </th>
+                <th (click)="toggleSort('phoneNumber')">
+                    Phone
+                    <span *ngIf="sortField === 'phoneNumber'">
+                        {{ ascending ? '↑' : '↓' }}
+                    </span>
+                </th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let customer of filteredCustomers">
+                <td>
+                    <img *ngIf="customer.photoUrl" [src]="customer.photoUrl" alt="Photo" width="50" height="50" />
+                    <span *ngIf="!customer.photoUrl">No Image</span>
+                </td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email || 'N/A' }}</td>
+                <td>{{ customer.phoneNumber || 'N/A' }}</td>
+                <td>
+                    <button [ngClass]="{
+                'approve': customer.isSuspended === null,
+                'suspend': customer.isSuspended === true,
+                'reactivate': customer.isSuspended === false
+              }" class="status-btn">
+                        {{ getStatusLabel(customer.isSuspended) }}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #loading>
+    <p>Loading customers...</p>
+</ng-template>
