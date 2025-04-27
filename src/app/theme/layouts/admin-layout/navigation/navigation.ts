@@ -70,6 +70,24 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       }
     ]
+  },
+  //partner
+  {
+    id: 'partner',
+    title: 'Partners',
+    type: 'group',
+    icon: 'icon-partner',
+    children: [
+      {
+        id: 'customers',
+        title: 'Customers',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/customers',
+        icon: 'customers',
+        breadcrumbs: false
+      }
+    ]
   }
 
   // {

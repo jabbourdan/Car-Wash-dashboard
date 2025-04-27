@@ -35,6 +35,11 @@ const routes: Routes = [
         path: 'reservation',
         loadComponent: () => import('./components/reservation/reservation.component').then((c) => c.ReservationComponent),
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'customers',
+        loadComponent: () => import('./components/customers/customers.component').then((c) => c.CustomersComponent),
+        canActivate: [AuthGuard]
       }
     ]
   }

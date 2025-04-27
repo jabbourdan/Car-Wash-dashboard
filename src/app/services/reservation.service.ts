@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, tap } from 'rxjs';
 import { Reservation } from '../models/reservation';
+import { ReservationModel } from '../models/reservation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,9 @@ export class ReservationService {
     });
   }
 
-  getAllReservations(): Observable<Reservation[]> {
-    return this.http.post<any[]>(this.apiUrl, {}, { headers: this.getAuthHeaders() }).pipe(
-      tap((response) => {
-        console.log('Reservations response:', response);
-      }),
-      map((reservations) => reservations.map((data) => new Reservation(data)))
-    );
+  getAllReservationss(): Observable<ReservationModel[]> {
+    return this.http
+      .post<any[]>(this.apiUrl, {}, { headers: this.getAuthHeaders() })
+      .pipe(map((data) => data.map((json) => ReservationModel.fromJson(json))));
   }
 }

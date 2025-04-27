@@ -34,7 +34,7 @@ export class Reservation {
     this.lastPartnerAssignTime = data.lastPartnerAssignTime;
     this.description = data.description;
     this.customer = new Customer(data.customer);
-    this.assignedPartner = new Partner(data.assignedPartners[0]); // Assuming a single partner for now
+    this.assignedPartner = new Partner(data.assignedPartners[0]);
     this.reservationStatus = data.reservationEvents[0]?.reservationStatus || '';
     this.statusColor = data.reservationEvents[0]?.statusColor || '';
     this.statusText = data.reservationEvents[0]?.statusText || '';
