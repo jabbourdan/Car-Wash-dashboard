@@ -71,10 +71,10 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-  //partner
+  //Customers
   {
-    id: 'partner',
-    title: 'Partners',
+    id: 'Customers',
+    title: 'Customers',
     type: 'group',
     icon: 'icon-partner',
     children: [

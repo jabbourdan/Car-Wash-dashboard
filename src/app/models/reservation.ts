@@ -1,3 +1,7 @@
+import { Customer } from "./customer.model";
+import { Partners } from "./partners";
+import { Transaction } from "./Transaction";
+
 export class Reservation {
   id: string;
   number: number;
@@ -12,7 +16,7 @@ export class Reservation {
   lastPartnerAssignTime: string;
   description: string;
   customer: Customer;
-  assignedPartner: Partner;
+  assignedPartner: Partners;  // Use Partners here instead of Partner
   reservationStatus: string;
   statusColor: string;
   statusText: string;
@@ -33,8 +37,8 @@ export class Reservation {
     this.isPendingPayment = data.isPendingPayment;
     this.lastPartnerAssignTime = data.lastPartnerAssignTime;
     this.description = data.description;
-    this.customer = new Customer(data.customer);
-    this.assignedPartner = new Partner(data.assignedPartners[0]);
+    this.customer = Customer.fromJson(data.customer);
+    this.assignedPartner = Partners.fromJson(data.assignedPartners[0]);  // Use Partners.fromJson to correctly instantiate the partner
     this.reservationStatus = data.reservationEvents[0]?.reservationStatus || '';
     this.statusColor = data.reservationEvents[0]?.statusColor || '';
     this.statusText = data.reservationEvents[0]?.statusText || '';
@@ -44,60 +48,22 @@ export class Reservation {
   }
 }
 
-export class Customer {
-  id: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  displayName: string;
+// export class Transaction {
+//   amount: {
+//     currency: string;
+//     details: {
+//       subtotal: string;
+//       shipping: string;
+//       shipping_discount: string;
+//     };
+//     total: string;
+//   };
+//   description: string;
+//   relatedResources: any;
 
-  constructor(data: any) {
-    this.id = data.id;
-    this.name = data.name;
-    this.email = data.email;
-    this.phoneNumber = data.phoneNumber;
-    this.displayName = data.displayName;
-  }
-}
-
-export class Partner {
-  id: string;
-  name: string;
-  displayName: string;
-  phoneNumber: string;
-  stars: number;
-  reviews: number;
-  sendViaWhatsApp: boolean;
-  sendViaNotification: boolean;
-
-  constructor(data: any) {
-    this.id = data.id;
-    this.name = data.name;
-    this.displayName = data.displayName;
-    this.phoneNumber = data.phoneNumber;
-    this.stars = data.stars;
-    this.reviews = data.reviews;
-    this.sendViaWhatsApp = data.sendViaWhatsApp;
-    this.sendViaNotification = data.sendViaNotification;
-  }
-}
-
-export class Transaction {
-  amount: {
-    currency: string;
-    details: {
-      subtotal: string;
-      shipping: string;
-      shipping_discount: string;
-    };
-    total: string;
-  };
-  description: string;
-  relatedResources: any;
-
-  constructor(data: any) {
-    this.amount = data.amount;
-    this.description = data.description;
-    this.relatedResources = data.related_resources;
-  }
-}
+//   constructor(data: any) {
+//     this.amount = data.amount;
+//     this.description = data.description;
+//     this.relatedResources = data.related_resources;
+//   }
+// }

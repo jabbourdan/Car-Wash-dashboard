@@ -5,7 +5,8 @@ export class Customer {
     public email: string,
     public phoneNumber: string,
     public photoUrl: string,
-    public isSuspended?: boolean
+    public isSuspended?: boolean,
+    public displayName?: string
   ) {}
 
   static fromJson(json: any): Customer {
@@ -15,7 +16,8 @@ export class Customer {
       json?.email ?? '',
       json?.phoneNumber ?? '',
       json?.photoUrl ?? '',
-      json?.isSuspended || false
+      json?.isSuspended || false,
+      json?.displayName ?? ''
     );
   }
 
@@ -26,7 +28,8 @@ export class Customer {
       email: this.email,
       phoneNumber: this.phoneNumber,
       photoUrl: this.photoUrl,
-      isSuspended: this.isSuspended
+      isSuspended: this.isSuspended,
+      displayName: this.displayName
     };
   }
 }
