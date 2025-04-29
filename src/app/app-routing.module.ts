@@ -40,6 +40,11 @@ const routes: Routes = [
         path: 'customers',
         loadComponent: () => import('./components/customers/customers.component').then((c) => c.CustomersComponent),
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'partnerInfoDialog',
+        loadComponent: () => import('./components/partner-info-dialog/partner-info-dialog.component').then((c) => c.PartnerInfoDialogComponent),
+        canActivate: [AuthGuard]
       }
     ]
   }

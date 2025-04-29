@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExtraPackageDetails } from 'src/app/models/extraPackageDetails';
 import { PartnerExtraDetails } from 'src/app/models/partnerExtraDetails';
 import { PartnerPackage } from 'src/app/models/partnerPackage';
 import { Partners } from 'src/app/models/partners';
 import { Regions } from 'src/app/models/regions';
+import { PartnerDataService } from 'src/app/services/partner-data.service';
 import { PartnerService } from 'src/app/services/partner.service';
 
 @Component({
@@ -20,35 +22,41 @@ export class PartnerInfoDialogComponent {
   regionsList: Array<Regions>=[];
   partnerPackagesList: Array<PartnerPackage>=[];
   showExtraDetails: boolean = false;
+  public partnerId: string;
+  partner: Partners;
 
   constructor(
     private partnerService:PartnerService,
-    public dialogRef: MatDialogRef<PartnerInfoDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public partner: Partners
+    private route: ActivatedRoute,
+    private router: Router,
+    private partnerDataService: PartnerDataService
   ) {}
 
 
 ngOnInit(): void {
-  this.getPartnerExtraDetails();
-  this.gePartnerPackage();
+  const partner = this.partnerDataService.getPartner();
+
+  if (partner) {
+    this.partner = partner;
+    this.partnerId = partner.id;
+    this.getPartnerExtraDetails();
+    this.gePartnerPackage();
+  } else {
+    console.error('No partner data found. Did you refresh the page or navigate directly?');
+  }
+  
 }
 
-
-  onClose(): void {
-    this.dialogRef.close(); // Close the dialog
-  }
 
 
   
   
   //extra details
   getPartnerExtraDetails(): void {
-    this.partnerService.getPartnerExtraDetails(this.partner.id).subscribe({
+    this.partnerService.getPartnerExtraDetails(this.partnerId).subscribe({
       next: (data) => {
         this.partnerExtraDetails=data;
         this.regionsList=data.regions;
-        console.log('Partners:', data);
-        console.log('Partners:', this.regionsList);
       },
       error: (err) => {
         console.error('Failed to load partners:', err);
@@ -64,7 +72,7 @@ ngOnInit(): void {
 
   //partner Packages
   gePartnerPackage(): void {
-    this.partnerService.gePartnerPackage(this.partner.id).subscribe({
+    this.partnerService.gePartnerPackage(this.partnerId).subscribe({
       next: (data) => {
         this.partnerPackagesList=data;
         console.log('partnerPackagesList:', data);
@@ -73,5 +81,10 @@ ngOnInit(): void {
         console.error('Failed to load partners:', err);
       }
     });
+  }
+
+
+  goBackToPartnersList() {
+    this.router.navigate(['/allPartners']); 
   }
 }

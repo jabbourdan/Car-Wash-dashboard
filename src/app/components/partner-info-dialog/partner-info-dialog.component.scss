@@ -1,98 +1,121 @@
-/* Style for dialog title */
 .dialog-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  
-  /* Style for dialog content */
-  .dialog-content {
-    padding: 15px;
-  }
-  
-  /* Style for making text bold */
-  .bold-text {
-    font-weight: bold;
-  }
+  font-size: 24px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}
 
-  .regions {
-    font-weight: bold;
-  }
-  
-  /* Button styles */
-  .toggle-btn {
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  /* Color for Extra Details button (green) */
-  .extra-details {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-  }
-  
-  /* Color for Less Details button (red) */
-  .less-details {
-    background-color: #f44336;
-    color: white;
-    border-radius: 5px;
-  }
-  
-  /* Style for extra details content */
-  .extra-details-content {
-    margin-top: 10px;
-  }
-  
-  /* Close button */
-  .close-btn {
-    padding: 10px 15px;
-    background-color: #888;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .close-btn:hover {
-    background-color: #555;
-  }
-  .region-row {
-    display: flex;
-    gap: 20px; /* space between items */
-    flex-wrap: wrap; /* ensures it wraps on smaller screens */
-    align-items: center;
-  }
-  
-  .partner-photo {
-    width: 250px;
-    height: 200px;
-    object-fit: cover; /* Ensures the image fills the area without distortion */
-    border-radius: 8px; /* Optional: for rounded corners */
-  }
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: #fafafa;
+  border-radius: 10px;
+}
 
-  .photo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px; /* Optional spacing below the image */
-  }
-  
-  .packages-container {
-    margin-top: 20px;
-  }
-  
-  .package-card {
-    border: 1px solid #ccc;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  
+.partner-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.photo-container {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.partner-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bold-text {
+  font-weight: 600;
+  color: #444;
+}
+
+.region-block {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.region-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.toggle-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.toggle-btn:hover {
+  background-color: #125ea2;
+}
+
+.extra-details-content {
+  margin-top: 1rem;
+  background: #eef4ff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.packages-container {
+  margin-top: 2rem;
+}
+
+.package-card {
+  background: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+.question-block {
+  background: #f9f9f9;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+.back-button-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.back-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #d1b725;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #e0e0e0;
+}

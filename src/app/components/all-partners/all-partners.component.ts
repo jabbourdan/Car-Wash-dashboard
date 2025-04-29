@@ -6,6 +6,7 @@ import { PartnerService } from 'src/app/services/partner.service';
 import { FormsModule } from '@angular/forms';
 import { PartnerInfoDialogComponent } from '../partner-info-dialog/partner-info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PartnerDataService } from 'src/app/services/partner-data.service';
 
 @Component({
   selector: 'app-all-partners',
@@ -22,7 +23,8 @@ export class AllPartnersComponent {
   constructor(
     private partnerService: PartnerService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private partnerDataService: PartnerDataService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class AllPartnersComponent {
     this.partnerService.getAllPartners().subscribe({
       next: (data) => {
         this.partnersList = data;
-        console.log('Partners:', this.partnersList);
+        console.log('Partners in info:', this.partnersList);
       },
       error: (err) => {
         console.error('Failed to load partners:', err);
@@ -98,21 +100,9 @@ export class AllPartnersComponent {
 
   //info
   showPartnerInfo(partner: Partners): void {
-    const dialogRef = this.dialog.open(PartnerInfoDialogComponent, {
-      data: partner, // Pass the partner data to the dialog
-      width: '700px', // You can change to '80%', '900px', etc.
-      height: '600px', // Optional: can also use '600px' or '80vh'
-      maxHeight: '90vh' // To avoid going off screen
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog was closed');
-    });
+    this.partnerDataService.setPartner(partner);
+    localStorage.setItem('partner', JSON.stringify(partner));
+  this.router.navigate(['/partnerInfoDialog']);
   }
-  // openPartnerInfoDialog(partner: Partners): void {
-  //   this.dialog.open(PartnerInfoDialogComponent, {
-  //     data: partner,
-  //     width: '600px'
-  //   });
-  // }
+ 
 }
