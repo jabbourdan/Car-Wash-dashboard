@@ -1,0 +1,22 @@
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h5 class="mb-0">Customers Reservation Count</h5>
+  </div>
+  <div class="card">
+    <div class="card-body">
+        <div class="chart-wrapper">
+            <apx-chart
+              #chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [xaxis]="chartOptions.xaxis"
+              [yaxis]="chartOptions.yaxis"
+              [colors]="chartOptions.colors"
+              [stroke]="chartOptions.stroke"
+              [dataLabels]="chartOptions.dataLabels"
+              [grid]="chartOptions.grid"
+              [theme]="chartOptions.theme"
+            ></apx-chart>
+          </div>
+    </div>
+  </div>
+  

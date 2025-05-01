@@ -16,7 +16,7 @@ export class Reservation {
   lastPartnerAssignTime: string;
   description: string;
   customer: Customer;
-  assignedPartner: Partners;  // Use Partners here instead of Partner
+  assignedPartners: Partners[]; 
   reservationStatus: string;
   statusColor: string;
   statusText: string;
@@ -38,7 +38,7 @@ export class Reservation {
     this.lastPartnerAssignTime = data.lastPartnerAssignTime;
     this.description = data.description;
     this.customer = Customer.fromJson(data.customer);
-    this.assignedPartner = Partners.fromJson(data.assignedPartners[0]);  // Use Partners.fromJson to correctly instantiate the partner
+    this.assignedPartners = data.assignedPartners.map((partner: any) => Partners.fromJson(partner));  // Use .map to handle multiple partners
     this.reservationStatus = data.reservationEvents[0]?.reservationStatus || '';
     this.statusColor = data.reservationEvents[0]?.statusColor || '';
     this.statusText = data.reservationEvents[0]?.statusText || '';
@@ -47,23 +47,3 @@ export class Reservation {
     this.transactionAmount = data.transactions || [];
   }
 }
-
-// export class Transaction {
-//   amount: {
-//     currency: string;
-//     details: {
-//       subtotal: string;
-//       shipping: string;
-//       shipping_discount: string;
-//     };
-//     total: string;
-//   };
-//   description: string;
-//   relatedResources: any;
-
-//   constructor(data: any) {
-//     this.amount = data.amount;
-//     this.description = data.description;
-//     this.relatedResources = data.related_resources;
-//   }
-// }
