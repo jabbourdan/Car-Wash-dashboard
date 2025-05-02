@@ -119,3 +119,17 @@
 .back-btn:hover {
   background-color: #e0e0e0;
 }
+.add-package-btn {
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-package-btn:hover {
+  background-color: #1565c0;
+}

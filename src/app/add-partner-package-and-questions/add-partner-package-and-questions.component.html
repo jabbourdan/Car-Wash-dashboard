@@ -1,0 +1,103 @@
+<div>
+    <h1>Add Partner Package</h1>
+    <form [formGroup]="packageForm" class="form m-4">
+  
+      <!-- Main Fields -->
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Package Name</label>
+          <input class="form-control" formControlName="packageName" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>VAT</label>
+          <input class="form-control" formControlName="vat" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>Country</label>
+          <input class="form-control" formControlName="country" />
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Country Code</label>
+          <input class="form-control" formControlName="countryCode" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>City</label>
+          <input class="form-control" formControlName="city" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>Currency</label>
+          <input class="form-control" formControlName="currency" />
+        </div>
+      </div>
+  
+      <!-- Extra Details -->
+      <h3>Extra Details (Optional)</h3>
+      <div formGroupName="extraDetails" class="form-row">
+        <div class="form-group col-md-4">
+          <label>Duration</label>
+          <input class="form-control" formControlName="duration" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>Description</label>
+          <input class="form-control" formControlName="packageDescription" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>Private Cars</label>
+          <input class="form-control" formControlName="PrivateCars" />
+        </div>
+      </div>
+  
+      <div formGroupName="extraDetails" class="form-row">
+        <div class="form-group col-md-4">
+          <label>Vans or Similar</label>
+          <input class="form-control" formControlName="VansOrSimilar" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>SUVs</label>
+          <input class="form-control" formControlName="SUVs" />
+        </div>
+        <div class="form-group col-md-4">
+          <label>Number of Services</label>
+          <input class="form-control" formControlName="numberOfServices" />
+        </div>
+      </div>
+  
+      <!-- Questions Section -->
+      <h3>Questions (Optional)</h3>
+      <div formArrayName="questions">
+        <div *ngFor="let question of questionsFormArray.controls; let i = index" [formGroupName]="i" class="form-row border p-2 mb-2">
+          <div class="form-group col-md-4">
+            <label>Question Text</label>
+            <input class="form-control" formControlName="text" />
+          </div>
+          <div class="form-group col-md-2">
+            <label>Type</label>
+            <input type="number" class="form-control" formControlName="type" />
+          </div>
+          <div class="form-group col-md-4">
+            <label>Expected Answer</label>
+            <input class="form-control" formControlName="expectedAnswer" />
+          </div>
+          <div class="form-group col-md-2">
+            <label>Mandatory</label><br />
+            <input type="checkbox" formControlName="mandatory" />
+          </div>
+          <div class="form-group col-md-1 d-flex align-items-end">
+            <button class="btn btn-danger" type="button" (click)="removeQuestion(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+  
+      <button class="btn btn-secondary mb-3" type="button" (click)="addQuestion()">+ Add Question</button>
+  
+      <!-- Actions -->
+      <div class="form-group">
+        <button class="btn btn-primary" [disabled]="packageForm.invalid" (click)="addPackage()">Save</button>
+        <button class="btn btn-danger" (click)="backAllCompanies()">Cancel</button>
+      </div>
+    </form>
+  </div>
+  

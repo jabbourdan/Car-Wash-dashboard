@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable, tap } from 'rxjs';
+import { PartnerPackage } from '../models/partnerPackage';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class PartnerService {
   private apiUrlSuspend = '/api/administrator/suspendUser';
   private apiUrlPartnerExtraDetails = '/api/administrator/getPartnerExtraDetails';
   private apiUrlPartnerPackage = '/api/administrator/getPartnerPackages';
+  private apiUrladdPartnerPackage = '/api/administrator/addPartnerPackage';
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
@@ -55,4 +57,18 @@ export class PartnerService {
     const url = `${this.apiUrlPartnerPackage}?partnerId=${partnerId}`;
     return this.http.post<any[]>(url, {}, { headers: this.getAuthHeaders() });
   }
+
+
+  addPartnerPackage(partnerPackage: PartnerPackage): Observable<any> {
+    return this.http.post<any>(
+      this.apiUrladdPartnerPackage,
+      partnerPackage,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      tap(response => {
+        console.log('Add Partner Package response:', response);
+      })
+    );
+  }
+  
 }

@@ -40,8 +40,12 @@
     </div>
   </div>
 </div>
+
   <!-- Packages Cards Section -->
 <div class="packages-container">
+  <button class="add-package-btn" (click)="openAddPackageDialog()">
+    + Add Package
+  </button>
   <h3>Packages</h3>
   <div class="package-card" *ngFor="let pkg of partnerPackagesList">
     <h4>{{ pkg.packageName }}</h4>

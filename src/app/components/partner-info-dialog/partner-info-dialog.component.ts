@@ -9,6 +9,8 @@ import { Partners } from 'src/app/models/partners';
 import { Regions } from 'src/app/models/regions';
 import { PartnerDataService } from 'src/app/services/partner-data.service';
 import { PartnerService } from 'src/app/services/partner.service';
+import { MatDialog } from "@angular/material/dialog";
+import { AddPartnerPackageAndQuestionsComponent } from 'src/app/add-partner-package-and-questions/add-partner-package-and-questions.component';
 
 @Component({
   selector: 'app-partner-info-dialog',
@@ -29,7 +31,8 @@ export class PartnerInfoDialogComponent {
     private partnerService:PartnerService,
     private route: ActivatedRoute,
     private router: Router,
-    private partnerDataService: PartnerDataService
+    private partnerDataService: PartnerDataService,
+    private dialog: MatDialog
   ) {}
 
 
@@ -86,5 +89,22 @@ ngOnInit(): void {
 
   goBackToPartnersList() {
     this.router.navigate(['/allPartners']); 
+  }
+
+
+  openAddPackageDialog(): void {
+    const dialogRef = this.dialog.open(AddPartnerPackageAndQuestionsComponent, {
+      width: '1500px',
+      height:'600px',
+      data: {} // optional: pass data if needed
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('New package:', result);
+        // Optionally add the package to your list:
+        this.partnerPackagesList.push(result);
+      }
+    });
   }
 }
