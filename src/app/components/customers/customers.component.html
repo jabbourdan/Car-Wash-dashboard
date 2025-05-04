@@ -1,38 +1,36 @@
-<!-- Search Bar -->
 <div class="form-group mb-3 d-flex align-items-center">
     <i class="search f-12" antIcon type="search" theme="outline"></i>
     <input type="search" class="form-control border-0 shadow-none" placeholder="Search by name, email or phone"
-        [(ngModel)]="searchText" />
+        [(ngModel)]="state.searchTerm" />
 </div>
 
-<!-- Table -->
-<div class="table-container" *ngIf="!isLoading; else loading">
+<div class="table-container">
     <table>
         <thead>
             <tr>
                 <th>Photo</th>
                 <th (click)="toggleSort('name')">
                     Name
-                    <span *ngIf="sortField === 'name'">
-                        {{ ascending ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'name'">
+                        {{ state.sortDirection ? '↑' : '↓' }}
                     </span>
                 </th>
                 <th (click)="toggleSort('email')">
                     Email
-                    <span *ngIf="sortField === 'email'">
-                        {{ ascending ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'email'">
+                        {{ state.sortDirection ? '↑' : '↓' }}
                     </span>
                 </th>
                 <th (click)="toggleSort('phoneNumber')">
                     Phone
-                    <span *ngIf="sortField === 'phoneNumber'">
-                        {{ ascending ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'phoneNumber'">
+                        {{ state.sortDirection ? '↑' : '↓' }}
                     </span>
                 </th>
                 <th>Status</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="!isLoading; else loading">
             <tr *ngFor="let customer of filteredCustomers">
                 <td>
                     <img *ngIf="customer.photoUrl" [src]="customer.photoUrl" alt="Photo" width="50" height="50" />
@@ -42,7 +40,7 @@
                 <td>{{ customer.email || 'N/A' }}</td>
                 <td>{{ customer.phoneNumber || 'N/A' }}</td>
                 <td>
-                    <button [ngClass]="{
+                    <button (click)="toggleSuspend(customer)" [ngClass]="{
                 'approve': customer.isSuspended === null,
                 'suspend': customer.isSuspended === true,
                 'reactivate': customer.isSuspended === false

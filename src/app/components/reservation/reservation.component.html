@@ -1,6 +1,6 @@
 <div class="form-group mb-0 d-flex align-items-center" style="margin-bottom: 20px;">
     <input type="search" class="form-control border-0 shadow-none"
-        placeholder="Search by number, customer name or partner name" [(ngModel)]="searchTerm" />
+        placeholder="Search by number, customer name or partner name" [(ngModel)]="state.searchTerm" />
 </div>
 
 <div class="table-container">
@@ -9,29 +9,44 @@
             <tr>
                 <th (click)="toggleSort('number')">
                     Number
-                    <span *ngIf="sortColumn === 'number'">
-                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'number'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
                     </span>
                 </th>
-                <th>Arrival Time</th>
+                <th (click)="toggleSort('arrivalTimeFrom')">
+                    Arrival Time
+                    <span *ngIf="state.sortColumn === 'arrivalTimeFrom'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
                 <th (click)="toggleSort('customer.name')">
                     Customer Name
-                    <span *ngIf="sortColumn === 'customer.name'">
-                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'customer.name'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
                     </span>
                 </th>
                 <th (click)="toggleSort('totalItemsPrice')">
                     Total Price
-                    <span *ngIf="sortColumn === 'totalItemsPrice'">
-                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'totalItemsPrice'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
                     </span>
                 </th>
-                <th>Total Transactions</th>
-                <th>Status</th>
+                <th (click)="toggleSort('totalTransactionsAmount')">
+                    Total Transactions
+                    <span *ngIf="state.sortColumn === 'totalTransactionsAmount'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
+                <th (click)="toggleSort('lastReservationEvents.statusText')">
+                    Status
+                    <span *ngIf="state.sortColumn === 'lastReservationEvents.statusText'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                </th>
                 <th (click)="toggleSort('assignedPartners.0.name')">
                     Partner
-                    <span *ngIf="sortColumn === 'assignedPartners.0.name'">
-                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                    <span *ngIf="state.sortColumn === 'assignedPartners.0.name'">
+                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
                     </span>
                 </th>
             </tr>

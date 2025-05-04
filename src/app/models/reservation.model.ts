@@ -1,5 +1,5 @@
 import { Customer } from './customer.model';
-import { Partner } from './partner.model';
+import { Partners } from './partners';
 import { ReservationEvent } from './reservation-event.model';
 
 export class ReservationModel {
@@ -8,7 +8,7 @@ export class ReservationModel {
     public number: number,
     public arrivalTimeFrom: string,
     public lastReservationEvents: ReservationEvent,
-    public assignedPartners: Partner[],
+    public assignedPartners: Partners[],
     public customer: Customer,
     public totalItemsPrice: number,
     public totalTransactionsAmount: number
@@ -20,7 +20,7 @@ export class ReservationModel {
       json.number,
       json.arrivalTimeFrom,
       ReservationEvent.fromJson(json.lastReservationEvents),
-      (json.assignedPartners || []).map((p: any) => Partner.fromJson(p)),
+      (json.assignedPartners || []).map((p: any) => Partners.fromJson(p)),
       Customer.fromJson(json.customer),
       json.totalItemsPrice,
 
