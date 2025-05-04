@@ -12,17 +12,15 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-  }
+  // private getAuthHeaders(): HttpHeaders {
+  //   const token = localStorage.getItem('authToken');
+  //   return new HttpHeaders({
+  //     Authorization: `Bearer ${token}`
+  //   });
+  // }
 
   getAllCustomers(): Observable<Customer[]> {
-    return this.http
-      .post<any[]>(this.apiUrl, {}, { headers: this.getAuthHeaders() })
-      .pipe(map((data) => data.map((json) => Customer.fromJson(json))));
+    return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(map((data) => data.map((json) => Customer.fromJson(json))));
   }
 
   suspendUser(userId: string, isSuspended: boolean) {
@@ -32,8 +30,7 @@ export class CustomerService {
       this.apiUrlSuspend,
       {},
       {
-        headers: this.getAuthHeaders(),
-        params: params // Attach params here
+        params: params
       }
     );
   }

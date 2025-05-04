@@ -8,7 +8,7 @@
 <div class="form-group mb-0 d-flex align-items-center">
   <i class="search f-12" antIcon type="search" theme="outline"></i>
   <input type="search" class="form-control border-0 shadow-none" placeholder="Search by name, email or phone"
-    [(ngModel)]="searchTerm" />
+    [(ngModel)]="state.searchTerm" />
 </div>
 
 
@@ -21,21 +21,21 @@
         <th>Photo</th>
         <th (click)="toggleSort('name')">
           Name
-          <span *ngIf="sortColumn === 'name'">
-            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+          <span *ngIf="state.sortColumn === 'name'">
+            {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
           </span>
         </th>
         <th (click)="toggleSort('email')">
           Email
-          <span *ngIf="sortColumn === 'email'">
-            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+          <span *ngIf="state.sortColumn === 'email'">
+            {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
           </span>
         </th>
 
         <th (click)="toggleSort('phoneNumber')">
           Phone Number
-          <span *ngIf="sortColumn === 'phoneNumber'">
-            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+          <span *ngIf="state.sortColumn === 'phoneNumber'">
+            {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
           </span>
         </th>
         <th>Status</th>
