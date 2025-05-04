@@ -9,6 +9,8 @@ import { PartnerPackage } from '../models/partnerPackage';
 import { ExtraPackageDetails } from '../models/extraPackageDetails';
 import { Question } from '../models/question';
 import { PartnerService } from '../services/partner.service';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-partner-package-and-questions',
@@ -19,13 +21,16 @@ import { PartnerService } from '../services/partner.service';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './add-partner-package-and-questions.component.html',
   styleUrls: ['./add-partner-package-and-questions.component.scss']
 })
 export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   packageForm: FormGroup;
+  public partnerPackageObj: PartnerPackage = new PartnerPackage(null, '', '', '', '', '', '');
+  public extraPackageDetailsObj: ExtraPackageDetails = new ExtraPackageDetails(null, '', '', '', '', '', '');
 
   constructor(
     private partnerService: PartnerService,
@@ -34,84 +39,27 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.packageForm = this.fb.group({
-      packageName: ['', Validators.required],
-      vat: ['', Validators.required],
-      country: ['', Validators.required],
-      countryCode: ['', Validators.required],
-      city: ['', Validators.required],
-      currency: ['', Validators.required],
-
-      extraDetails: this.fb.group({
-        id: [this.generateRandomId()],
-        duration: [''],
-        packageDescription: [''],
-        PrivateCars: [''],
-        VansOrSimilar: [''],
-        SUVs: [''],
-        numberOfServices: [''],
-        packageName: [''],
-        caravans: ['']
-      }),
-
-      questions: this.fb.array([])
-    });
   }
 
-  get questionsFormArray(): FormArray {
-    return this.packageForm.get('questions') as FormArray;
-  }
+ 
 
   addQuestion(): void {
-    const questionGroup = this.fb.group({
-      id: [this.generateRandomId()],
-      text: ['', Validators.required],
-      type: [0, Validators.required],
-      expectedAnswer: [''],
-      mandatory: [false]
-    });
-    this.questionsFormArray.push(questionGroup);
+
   }
 
   removeQuestion(index: number): void {
-    this.questionsFormArray.removeAt(index);
   }
 
   addPackage(): void {
-    if (this.packageForm.valid) {
-      const formValues = this.packageForm.value;
+    this.partnerPackageObj.extraDetails=this.extraPackageDetailsObj
 
-      const extraDetails = formValues.extraDetails
-        ? ExtraPackageDetails.fromJson(formValues.extraDetails)
-        : undefined;
-
-      const questions = formValues.questions
-        ? formValues.questions.map((q: any) => Question.fromJson(q))
-        : [];
-
-      const newPackage = new PartnerPackage(
-        this.generateRandomId(),
-        formValues.packageName,
-        formValues.vat,
-        formValues.country,
-        formValues.countryCode,
-        formValues.city,
-        formValues.currency,
-        extraDetails,
-        questions
-      );
-
-      this.partnerService.addPartnerPackage(newPackage).subscribe(() => {
-        this.dialogRef.close();
-      });
-    }
+    console.log('After User Input ALl:', this.partnerPackageObj);
+    console.log('After User Input Extra Package Details :', this.extraPackageDetailsObj);
   }
+  
 
   backAllCompanies(): void {
-    this.dialogRef.close();
   }
 
-  generateRandomId(): string {
-    return Math.random().toString(36).substring(2, 10);
-  }
+
 }

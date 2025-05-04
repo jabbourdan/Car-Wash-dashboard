@@ -1,101 +1,101 @@
 <div>
     <h1>Add Partner Package</h1>
-    <form [formGroup]="packageForm" class="form m-4">
+    <form  class="form m-4">
   
       <!-- Main Fields -->
       <div class="form-row">
         <div class="form-group col-md-4">
           <label>Package Name</label>
-          <input class="form-control" formControlName="packageName" />
+          <input [(ngModel)]="partnerPackageObj.packageName" name="packageName" required>
         </div>
         <div class="form-group col-md-4">
           <label>VAT</label>
-          <input class="form-control" formControlName="vat" />
+          <input   [(ngModel)]="partnerPackageObj.vat" name="vat" required/>
         </div>
         <div class="form-group col-md-4">
           <label>Country</label>
-          <input class="form-control" formControlName="country" />
+          <input   [(ngModel)]="partnerPackageObj.country" name="country" required/>
         </div>
       </div>
   
       <div class="form-row">
         <div class="form-group col-md-4">
           <label>Country Code</label>
-          <input class="form-control" formControlName="countryCode" />
+          <input   [(ngModel)]="partnerPackageObj.countryCode" name="countryCode" required/>
         </div>
         <div class="form-group col-md-4">
           <label>City</label>
-          <input class="form-control" formControlName="city" />
+          <input   [(ngModel)]="partnerPackageObj.city" name="city" required/>
         </div>
         <div class="form-group col-md-4">
           <label>Currency</label>
-          <input class="form-control" formControlName="currency" />
+          <input  class="form-control" [(ngModel)]="partnerPackageObj.currency" name="currency" required/>
         </div>
       </div>
   
       <!-- Extra Details -->
       <h3>Extra Details (Optional)</h3>
-      <div formGroupName="extraDetails" class="form-row">
+      <div class="form-row">
         <div class="form-group col-md-4">
           <label>Duration</label>
-          <input class="form-control" formControlName="duration" />
+          <input   [(ngModel)]="extraPackageDetailsObj.duration" name="duration" required/>
         </div>
         <div class="form-group col-md-4">
           <label>Description</label>
-          <input class="form-control" formControlName="packageDescription" />
+          <input  [(ngModel)]="extraPackageDetailsObj.packageDescription" name="packageDescription" required/>
         </div>
         <div class="form-group col-md-4">
           <label>Private Cars</label>
-          <input class="form-control" formControlName="PrivateCars" />
+          <input   [(ngModel)]="extraPackageDetailsObj.PrivateCars" name="PrivateCars" required/>
         </div>
       </div>
   
-      <div formGroupName="extraDetails" class="form-row">
+      <div  class="form-row">
         <div class="form-group col-md-4">
           <label>Vans or Similar</label>
-          <input class="form-control" formControlName="VansOrSimilar" />
+          <input  [(ngModel)]="extraPackageDetailsObj.VansOrSimilar" name="VansOrSimilar" required/>
         </div>
         <div class="form-group col-md-4">
           <label>SUVs</label>
-          <input class="form-control" formControlName="SUVs" />
+          <input   [(ngModel)]="extraPackageDetailsObj.SUVs" name="SUVs" required/>
         </div>
         <div class="form-group col-md-4">
           <label>Number of Services</label>
-          <input class="form-control" formControlName="numberOfServices" />
+          <input   [(ngModel)]="extraPackageDetailsObj.numberOfServices" name="numberOfServices" required/>
         </div>
       </div>
   
       <!-- Questions Section -->
-      <h3>Questions (Optional)</h3>
-      <div formArrayName="questions">
+      <!-- <h3>Questions (Optional)</h3>
+      <div >
         <div *ngFor="let question of questionsFormArray.controls; let i = index" [formGroupName]="i" class="form-row border p-2 mb-2">
           <div class="form-group col-md-4">
             <label>Question Text</label>
-            <input class="form-control" formControlName="text" />
+            <input class="form-control"  [(ngModel)]="partnerPackageObj.text"/>
           </div>
           <div class="form-group col-md-2">
             <label>Type</label>
-            <input type="number" class="form-control" formControlName="type" />
+            <input type="number" class="form-control"  [(ngModel)]="partnerPackageObj.type"/>
           </div>
           <div class="form-group col-md-4">
             <label>Expected Answer</label>
-            <input class="form-control" formControlName="expectedAnswer" />
+            <input class="form-control" [(ngModel)]="partnerPackageObj.expectedAnswer"/>
           </div>
           <div class="form-group col-md-2">
             <label>Mandatory</label><br />
-            <input type="checkbox" formControlName="mandatory" />
+            <input type="checkbox" [(ngModel)]="partnerPackageObj.mandatory"/>
           </div>
           <div class="form-group col-md-1 d-flex align-items-end">
             <button class="btn btn-danger" type="button" (click)="removeQuestion(i)">Remove</button>
           </div>
         </div>
-      </div>
+      </div> -->
   
-      <button class="btn btn-secondary mb-3" type="button" (click)="addQuestion()">+ Add Question</button>
+      <!-- <button class="btn btn-secondary mb-3" type="button" (click)="addQuestion()">+ Add Question</button> -->
   
       <!-- Actions -->
       <div class="form-group">
-        <button class="btn btn-primary" [disabled]="packageForm.invalid" (click)="addPackage()">Save</button>
+        <button class="btn btn-primary" (click)="addPackage()">Save</button>
         <button class="btn btn-danger" (click)="backAllCompanies()">Cancel</button>
       </div>
     </form>
