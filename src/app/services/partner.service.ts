@@ -59,10 +59,13 @@ export class PartnerService {
   }
 
 
-  addPartnerPackage(partnerPackage: PartnerPackage): Observable<any> {
+  addPartnerPackage(idpartner: number, partnerPackage: PartnerPackage): Observable<any> {
+    console.log('service:',partnerPackage);
+    console.log('id service:',partnerPackage);
+    const url = `${this.apiUrladdPartnerPackage}?partnerId=${idpartner}`;
     return this.http.post<any>(
-      this.apiUrladdPartnerPackage,
-      partnerPackage,
+      url,
+      partnerPackage, // request body
       { headers: this.getAuthHeaders() }
     ).pipe(
       tap(response => {
@@ -70,5 +73,6 @@ export class PartnerService {
       })
     );
   }
+  
   
 }

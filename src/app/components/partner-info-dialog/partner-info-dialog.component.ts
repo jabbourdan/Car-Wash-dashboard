@@ -96,7 +96,7 @@ ngOnInit(): void {
     const dialogRef = this.dialog.open(AddPartnerPackageAndQuestionsComponent, {
       width: '1500px',
       height:'600px',
-      data: {} // optional: pass data if needed
+      data: { partnerId: this.partnerId } 
     });
   
     dialogRef.afterClosed().subscribe(result => {

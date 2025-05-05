@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,7 +35,8 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   constructor(
     private partnerService: PartnerService,
     public dialogRef: MatDialogRef<AddPartnerPackageAndQuestionsComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any 
   ) {}
 
   ngOnInit(): void {
@@ -52,9 +53,18 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
 
   addPackage(): void {
     this.partnerPackageObj.extraDetails=this.extraPackageDetailsObj
+    console.log('id:', this.data.partnerId);
 
     console.log('After User Input ALl:', this.partnerPackageObj);
     console.log('After User Input Extra Package Details :', this.extraPackageDetailsObj);
+    this.partnerService.addPartnerPackage(this.data.partnerId,this.partnerPackageObj).subscribe((data) => {
+      if (data) {
+      console.log("yees")
+      } else {
+        console.log("nooo")
+
+      }
+    });
   }
   
 
