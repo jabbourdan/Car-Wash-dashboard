@@ -5,23 +5,25 @@ export class Customer {
     public email: string,
     public phoneNumber: string,
     public photoUrl: string,
-    public isSuspended?: boolean,
+    public isSuspended: boolean = false,
+    public isApproved: boolean = false,
     public displayName?: string
   ) {}
 
-  static fromJson(json: any): Customer {
+  static fromJson(json: Partial<Customer>): Customer {
     return new Customer(
-      json?.id ?? '',
-      json?.name ?? '',
-      json?.email ?? '',
-      json?.phoneNumber ?? '',
-      json?.photoUrl ?? '',
-      json?.isSuspended || false,
-      json?.displayName ?? ''
+      json.id ?? '',
+      json.name ?? '',
+      json.email ?? '',
+      json.phoneNumber ?? '',
+      json.photoUrl ?? '',
+      json.isSuspended ?? false,
+      json.isApproved ?? false,
+      json.displayName ?? ''
     );
   }
 
-  toJson(): any {
+  toJson(): Record<string, any> {
     return {
       id: this.id,
       name: this.name,
@@ -29,6 +31,7 @@ export class Customer {
       phoneNumber: this.phoneNumber,
       photoUrl: this.photoUrl,
       isSuspended: this.isSuspended,
+      isApproved: this.isApproved,
       displayName: this.displayName
     };
   }

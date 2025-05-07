@@ -43,26 +43,12 @@ const routes: Routes = [
       },
       {
         path: 'partnerInfoDialog',
-        loadComponent: () => import('./components/partner-info-dialog/partner-info-dialog.component').then((c) => c.PartnerInfoDialogComponent),
+        loadComponent: () =>
+          import('./components/partner-info-dialog/partner-info-dialog.component').then((c) => c.PartnerInfoDialogComponent),
         canActivate: [AuthGuard]
       }
     ]
   }
-  // {
-  //   path: '',
-  //   component: GuestLayoutComponent,
-  //   children: [
-  //     {
-  //       path: 'login',
-  //       loadComponent: () => import('./demo/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
-  //     },
-  //     {
-  //       path: 'register',
-  //       loadComponent: () =>
-  //         import('./demo/pages/authentication/auth-register/auth-register.component').then((c) => c.AuthRegisterComponent)
-  //     }
-  //   ]
-  // }
 ];
 
 @NgModule({

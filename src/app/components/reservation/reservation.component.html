@@ -1,6 +1,7 @@
-<div class="form-group mb-0 d-flex align-items-center" style="margin-bottom: 20px;">
+<div class="form-group mb-3 d-flex align-items-center">
+    <i class="search f-12" antIcon type="search" theme="outline"></i>
     <input type="search" class="form-control border-0 shadow-none"
-        placeholder="Search by number, customer name or partner name" [(ngModel)]="state.searchTerm" />
+        placeholder="Search by number, customer name, or partner name" [(ngModel)]="state.searchTerm" />
 </div>
 
 <div class="table-container">
@@ -10,49 +11,63 @@
                 <th (click)="toggleSort('number')">
                     Number
                     <span *ngIf="state.sortColumn === 'number'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
                 <th (click)="toggleSort('arrivalTimeFrom')">
                     Arrival Time
                     <span *ngIf="state.sortColumn === 'arrivalTimeFrom'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
                 <th (click)="toggleSort('customer.name')">
                     Customer Name
                     <span *ngIf="state.sortColumn === 'customer.name'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
                 <th (click)="toggleSort('totalItemsPrice')">
                     Total Price
                     <span *ngIf="state.sortColumn === 'totalItemsPrice'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
                 <th (click)="toggleSort('totalTransactionsAmount')">
                     Total Transactions
                     <span *ngIf="state.sortColumn === 'totalTransactionsAmount'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
                 <th (click)="toggleSort('lastReservationEvents.statusText')">
                     Status
                     <span *ngIf="state.sortColumn === 'lastReservationEvents.statusText'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
                 <th (click)="toggleSort('assignedPartners.0.name')">
                     Partner
                     <span *ngIf="state.sortColumn === 'assignedPartners.0.name'">
-                        {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
+
                     </span>
                 </th>
             </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let res of filteredAndSortedReservations">
+        <tbody *ngIf="!isLoading else loading">
+            <tr *ngFor="let res of filteredAndSortedReservations; trackBy: trackByReservationNumber">
                 <td>{{ res.number }}</td>
                 <td>{{ res.arrivalTimeFrom }}</td>
                 <td>{{ res.customer?.name }}</td>
@@ -63,4 +78,12 @@
             </tr>
         </tbody>
     </table>
+
+    <div *ngIf="isError" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
 </div>
+
+<ng-template #loading>
+    <p>Loading reservations...</p>
+</ng-template>

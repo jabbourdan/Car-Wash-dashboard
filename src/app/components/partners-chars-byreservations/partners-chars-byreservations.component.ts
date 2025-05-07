@@ -10,16 +10,15 @@ import { ReservationService } from 'src/app/services/reservation.service';
   styleUrl: './partners-chars-byreservations.component.scss'
 })
 export class PartnersCharsByreservationsComponent {
- // public props
+  // public props
   chart = viewChild.required<ChartComponent>('chart');
   chartOptions!: Partial<ApexOptions>;
-    reservationsssss: ReservationModel[] = [];
-  
- constructor(
+  reservationsssss: ReservationModel[] = [];
+
+  constructor(
     private router: Router,
     private reservationService: ReservationService
   ) {}
-
 
   // life cycle hook
   ngOnInit() {
@@ -47,17 +46,15 @@ export class PartnersCharsByreservationsComponent {
     };
   }
 
-  
-
   loadReservations(): void {
-    this.reservationService.getAllReservationss().subscribe({
+    this.reservationService.getAllReservations().subscribe({
       next: (data) => {
         this.reservationsssss = data;
-  
+
         // Count reservations per partner
         const partnerCounts: { [key: string]: number } = {};
-        data.forEach(res => {
-          res.assignedPartners?.forEach(partner => {
+        data.forEach((res) => {
+          res.assignedPartners?.forEach((partner) => {
             const partnerName = partner?.name || 'Unknown';
             if (partnerCounts[partnerName]) {
               partnerCounts[partnerName]++;
@@ -66,12 +63,11 @@ export class PartnersCharsByreservationsComponent {
             }
           });
         });
-        
-  
+
         // Prepare chart data
         const categories = Object.keys(partnerCounts);
         const counts = Object.values(partnerCounts);
-  
+
         this.chartOptions = {
           ...this.chartOptions,
           series: [

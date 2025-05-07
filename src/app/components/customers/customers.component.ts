@@ -2,23 +2,25 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataUtils } from 'src/app/data-utils';
+import { catchError, of } from 'rxjs';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
+import { UserService } from 'src/app/services/user.service';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { DataUtils } from 'src/app/utils/data-utils';
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NzIconModule],
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss']
 })
 export class CustomersComponent {
-  customers: Customer[] = []; // Full list from server
-  // searchText = '';
-  // sortField: keyof Customer | '' = '';
-  //  ascending: boolean = true;
+  customers: Customer[] = [];
   isLoading = true;
+  isError = false;
+  errorMessage = '';
   state = {
     searchTerm: '',
     sortColumn: '',
@@ -29,7 +31,8 @@ export class CustomersComponent {
 
   constructor(
     private router: Router,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -37,17 +40,22 @@ export class CustomersComponent {
   }
 
   loadCustomers(): void {
-    this.customerService.getAllCustomers().subscribe({
-      next: (data) => {
+    this.customerService
+      .getAllCustomers()
+      .pipe(
+        catchError((err) => {
+          this.isError = true;
+          this.errorMessage = 'Failed to load customers. Please try again later.';
+          this.isLoading = false;
+          return of([]);
+        })
+      )
+      .subscribe((data) => {
         this.customers = data;
         this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load customers:', err);
-        this.isLoading = false;
-      }
-    });
+      });
   }
+
   get filteredCustomers(): Customer[] {
     let filtered = DataUtils.search(this.customers, this.state.searchTerm, this.searchFields);
 
@@ -66,61 +74,31 @@ export class CustomersComponent {
       this.state.sortDirection = 'asc';
     }
   }
-  // get filteredCustomers(): Customer[] {
-  //   let filtered = this.customers;
-
-  //   if (this.searchText) {
-  //     const term = this.searchText.toLowerCase();
-  //     filtered = filtered.filter(
-  //       (customer) =>
-  //         customer.name?.toLowerCase().includes(term) ||
-  //         customer.email?.toLowerCase().includes(term) ||
-  //         customer.phoneNumber?.toLowerCase().includes(term)
-  //     );
-  //   }
-
-  //   if (this.sortField) {
-  //     filtered = filtered.sort((a, b) => {
-  //       const aField = (a[this.sortField] || '').toString().toLowerCase();
-  //       const bField = (b[this.sortField] || '').toString().toLowerCase();
-  //       if (aField < bField) return this.ascending ? -1 : 1;
-  //       if (aField > bField) return this.ascending ? 1 : -1;
-  //       return 0;
-  //     });
-  //   }
-
-  //   return filtered;
-  // }
-
-  // toggleSort(field: keyof Customer) {
-  //   if (this.sortField === field) {
-  //     this.ascending = !this.ascending;
-  //   } else {
-  //     this.sortField = field;
-  //     this.ascending = true;
-  //   }
-  // }
-
   getStatusLabel(isSuspended: boolean | null): string {
-    if (isSuspended === null) {
-      return 'Approve';
-    }
-    return isSuspended ? 'Reactivate' : 'Suspend';
+    return isSuspended === null ? 'Approve' : isSuspended ? 'Reactivate' : 'Suspend';
   }
 
-  toggleSuspend(customer: Customer): void {
-    const updatedSuspend = customer.isSuspended === true ? false : true;
+  toggleApproval(customer: Customer): void {
+    this.toggleUserStatus(customer, 'approveUser', 'isApproved');
+  }
 
-    this.customerService.suspendUser(customer.id, updatedSuspend).subscribe({
+  toggleSuspension(customer: Customer): void {
+    this.toggleUserStatus(customer, 'suspendUser', 'isSuspended');
+  }
+
+  private toggleUserStatus(customer: Customer, action: 'approveUser' | 'suspendUser', statusField: 'isApproved' | 'isSuspended'): void {
+    this.userService[action](customer.id, !customer[statusField]).subscribe({
       next: () => {
-        customer.isSuspended = updatedSuspend; // Update the partner's suspension status
-        this.loadCustomers();
+        customer[statusField] = !customer[statusField];
       },
-      error: (err) => {
-        console.error('Failed to change suspend status', err);
-        this.loadCustomers();
+      error: () => {
+        this.isError = true;
+        this.errorMessage = `Failed to ${statusField === 'isApproved' ? 'approve' : 'suspend'} customer.`;
       }
     });
-    this.loadCustomers();
+  }
+
+  trackByCustomerId(index: number, customer: Customer): number {
+    return +customer.id;
   }
 }

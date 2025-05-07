@@ -17,43 +17,50 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Photo</th>
         <th (click)="toggleSort('name')">
           Name
           <span *ngIf="state.sortColumn === 'name'">
-            {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+            <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+            <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
           </span>
         </th>
         <th (click)="toggleSort('email')">
           Email
           <span *ngIf="state.sortColumn === 'email'">
-            {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+            <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+            <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
           </span>
         </th>
-
         <th (click)="toggleSort('phoneNumber')">
           Phone Number
           <span *ngIf="state.sortColumn === 'phoneNumber'">
-            {{ state.sortDirection === 'asc' ? '↑' : '↓' }}
+            <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+            <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
           </span>
         </th>
-        <th>Status</th>
+
+        <th>Suspension Status</th>
+        <th>Approval Status</th>
         <th>Info</th>
       </tr>
     </thead>
 
-    <tbody>
-      <tr *ngFor="let partner of filteredAndSortedPartners; let i = index">
-        <td>{{ i + 1 }}</td>
+    <tbody *ngIf="!isLoading else loading">
+      <tr *ngFor="let partner of filteredAndSortedPartners; ">
+
         <td>
-          <img [src]="partner.photoUrl" alt="Photo" width="40" height="40" />
+          <img *ngIf="partner.photoUrl; else defaultImage" [src]="partner.photoUrl" alt="Photo" width="50"
+            height="50" />
+          <ng-template #defaultImage>
+            <img src="assets/images/user/defaultuser.jpg" alt="Default Photo" width="50" height="50" />
+          </ng-template>
         </td>
         <td>{{ partner.name }}</td>
         <td>{{ partner.email }}</td>
         <td>{{ partner.phoneNumber }}</td>
         <td>
-          <button (click)="toggleSuspend(partner)" [ngClass]="{
+          <button (click)="toggleSuspension(partner)" [ngClass]="{
                       'approve': partner.isSuspended === null,
                       'suspend': partner.isSuspended === true,
                       'reactivate': partner.isSuspended === false
@@ -61,7 +68,14 @@
             {{ getStatusLabel(partner.isSuspended) }}
           </button>
         </td>
-
+        <td>
+          <button (click)="toggleApproval(partner)" [ngClass]="{
+      'suspend': partner.isApproved === true,
+      'reactivate': partner.isApproved === false
+    }" class="status-btn">
+            {{ partner.isApproved ? 'Reject' : 'Approve' }}
+          </button>
+        </td>
 
         <td>
           <i class="material-icons info-icon" (click)="showPartnerInfo(partner)" title="More info">info</i>
@@ -71,4 +85,11 @@
     </tbody>
 
   </table>
+  <div *ngIf="isError" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
 </div>
+
+<ng-template #loading>
+  <p>Loading partners...</p>
+</ng-template>

@@ -46,19 +46,18 @@ import { CustomerStatusCharsComponent } from 'src/app/components/customer-status
 export class DefaultComponent {
   private iconService = inject(IconService);
   partnersList: Array<Partners> = [];
-  partnersCount:number=0
+  partnersCount: number = 0;
   customers: Customer[] = []; // Full list from server
-  customersCount:number=0
+  customersCount: number = 0;
   reservationsssss: ReservationModel[] = [];
-  reservationsCount:number=0
+  reservationsCount: number = 0;
   AnalyticEcommerce: any[] = []; // just declare it, don't assign yet
 
-
   // constructor
-  constructor(private partnerService: PartnerService,
+  constructor(
+    private partnerService: PartnerService,
     private customerService: CustomerService,
     private reservationService: ReservationService
-
   ) {
     this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
   }
@@ -81,7 +80,7 @@ export class DefaultComponent {
       }
     });
   }
-  
+
   loadCustomers(): void {
     this.customerService.getAllCustomers().subscribe({
       next: (data) => {
@@ -96,7 +95,7 @@ export class DefaultComponent {
   }
 
   loadReservations(): void {
-    this.reservationService.getAllReservationss().subscribe({
+    this.reservationService.getAllReservations().subscribe({
       next: (data) => {
         this.reservationsssss = data;
         this.reservationsCount = this.reservationsssss.length;
@@ -114,16 +113,13 @@ export class DefaultComponent {
     const percent = (this.partnersCount / total) * 100;
     return percent.toFixed(1) + '%';
   }
-  
+
   getCustomersPercentage(): string {
     const total = this.partnersCount + this.customersCount;
     if (total === 0) return '0%';
     const percent = (this.customersCount / total) * 100;
     return percent.toFixed(1) + '%';
   }
-  
-  
-
 
   updateAnalyticsData(): void {
     this.AnalyticEcommerce = [
@@ -134,7 +130,7 @@ export class DefaultComponent {
         border: 'border-primary',
         icon: 'rise',
         percentage: this.getPartnersPercentage(),
-        color: 'text-primary',
+        color: 'text-primary'
       },
       {
         title: 'Total Customers',
@@ -143,7 +139,7 @@ export class DefaultComponent {
         border: 'border-warning',
         icon: 'rise',
         percentage: this.getCustomersPercentage(),
-        color: 'text-warning',
+        color: 'text-warning'
       },
       {
         title: 'Total Reservations',
@@ -151,16 +147,12 @@ export class DefaultComponent {
         background: 'non',
         border: 'non',
         icon: 'calendar',
-        color: 'non',
+        color: 'non'
       }
     ];
   }
-  
-  
 
   recentOrder = tableData;
-
- 
 
   transaction = [
     {

@@ -7,17 +7,23 @@ import { FormsModule } from '@angular/forms';
 import { PartnerInfoDialogComponent } from '../partner-info-dialog/partner-info-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PartnerDataService } from 'src/app/services/partner-data.service';
-import { DataUtils } from 'src/app/data-utils';
+import { DataUtils } from 'src/app/utils/data-utils';
+import { UserService } from 'src/app/services/user.service';
+import { catchError, of, tap } from 'rxjs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { log } from 'console';
 
 @Component({
   selector: 'app-all-partners',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NzIconModule],
   templateUrl: './all-partners.component.html',
   styleUrl: './all-partners.component.scss'
 })
 export class AllPartnersComponent {
   partnersList: Array<Partners> = [];
-
+  isLoading = true;
+  isError = false;
+  errorMessage = '';
   state = {
     searchTerm: '',
     sortColumn: '',
@@ -29,23 +35,30 @@ export class AllPartnersComponent {
     private partnerService: PartnerService,
     private dialog: MatDialog,
     private router: Router,
-    private partnerDataService: PartnerDataService
+    private partnerDataService: PartnerDataService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.getAllPartners();
+    console.log(this.getAllPartners());
   }
 
   getAllPartners(): void {
-    this.partnerService.getAllPartners().subscribe({
-      next: (data) => {
+    this.partnerService
+      .getAllPartners()
+      .pipe(
+        catchError((err) => {
+          this.isError = true;
+          this.errorMessage = 'Failed to load partners. Please try again later.';
+          this.isLoading = false;
+          return of([]);
+        })
+      )
+      .subscribe((data) => {
         this.partnersList = data;
-        console.log('Partners in info:', this.partnersList);
-      },
-      error: (err) => {
-        console.error('Failed to load partners:', err);
-      }
-    });
+        this.isLoading = false;
+      });
   }
   get filteredAndSortedPartners(): Partners[] {
     let filtered = DataUtils.search(this.partnersList, this.state.searchTerm, this.searchFields);
@@ -65,37 +78,7 @@ export class AllPartnersComponent {
       this.state.sortDirection = 'asc';
     }
   }
-  // get filteredAndSortedPartners(): Partners[] {
-  //   let filtered = this.partnersList;
 
-  //   if (this.searchTerm) {
-  //     const term = this.searchTerm.toLowerCase();
-  //     filtered = filtered.filter(
-  //       (p) => p.name?.toLowerCase().includes(term) || p.email?.toLowerCase().includes(term) || p.phoneNumber?.toLowerCase().includes(term)
-  //     );
-  //   }
-
-  //   if (this.sortColumn) {
-  //     filtered = filtered.sort((a, b) => {
-  //       const valA = (a as any)[this.sortColumn]?.toLowerCase?.() || '';
-  //       const valB = (b as any)[this.sortColumn]?.toLowerCase?.() || '';
-  //       if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-  //       if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-  //       return 0;
-  //     });
-  //   }
-
-  //   return filtered;
-  // }
-
-  // toggleSort(column: string) {
-  //   if (this.sortColumn === column) {
-  //     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-  //   } else {
-  //     this.sortColumn = column;
-  //     this.sortDirection = 'asc';
-  //   }
-  // }
   //status
   getStatusLabel(isSuspended: boolean | null): string {
     if (isSuspended === null) {
@@ -104,26 +87,34 @@ export class AllPartnersComponent {
     return isSuspended ? 'Reactivate' : 'Suspend';
   }
 
-  toggleSuspend(partner: Partners): void {
-    const updatedSuspend = partner.isSuspended === true ? false : true;
-
-    this.partnerService.suspendUser(partner.id, updatedSuspend).subscribe({
-      next: () => {
-        partner.isSuspended = updatedSuspend; // Update the partner's suspension status
-        this.getAllPartners();
-      },
-      error: (err) => {
-        console.error('Failed to change suspend status', err);
-        this.getAllPartners();
-      }
-    });
-    this.getAllPartners();
-  }
-
   //info
   showPartnerInfo(partner: Partners): void {
     this.partnerDataService.setPartner(partner);
     localStorage.setItem('partner', JSON.stringify(partner));
     this.router.navigate(['/partnerInfoDialog']);
+  }
+
+  toggleApproval(partner: Partners): void {
+    this.toggleUserStatus(partner, 'approveUser', 'isApproved');
+  }
+
+  toggleSuspension(partner: Partners): void {
+    this.toggleUserStatus(partner, 'suspendUser', 'isSuspended');
+  }
+
+  private toggleUserStatus(partner: Partners, action: 'approveUser' | 'suspendUser', statusField: 'isApproved' | 'isSuspended'): void {
+    this.userService[action](partner.id, !partner[statusField]).subscribe({
+      next: () => {
+        partner[statusField] = !partner[statusField];
+      },
+      error: () => {
+        this.isError = true;
+        this.errorMessage = `Failed to ${statusField === 'isApproved' ? 'approve' : 'suspend'} customer.`;
+      }
+    });
+  }
+
+  trackByCustomerId(index: number, partner: Partners): string {
+    return partner.id;
   }
 }

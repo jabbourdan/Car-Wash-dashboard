@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { ReservationModel } from '../models/reservation.model';
 
 @Injectable({
@@ -11,14 +11,14 @@ export class ReservationService {
 
   constructor(private http: HttpClient) {}
 
-  // private getAuthHeaders(): HttpHeaders {
-  //   const token = localStorage.getItem('authToken');
-  //   return new HttpHeaders({
-  //     Authorization: `Bearer ${token}`
-  //   });
-  // }
-
-  getAllReservationss(): Observable<ReservationModel[]> {
-    return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(map((data) => data.map((json) => ReservationModel.fromJson(json))));
+  getAllReservations(): Observable<ReservationModel[]> {
+    return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(
+      map((data) => data.map((json) => ReservationModel.fromJson(json))),
+      tap((res) => console.log('Reservations:', res)),
+      catchError((error) => {
+        console.error('Error:', error);
+        return throwError(() => new Error('Failed to fetch reservations'));
+      })
+    );
   }
 }

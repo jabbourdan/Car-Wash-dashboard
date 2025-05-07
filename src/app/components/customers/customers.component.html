@@ -12,45 +12,63 @@
                 <th (click)="toggleSort('name')">
                     Name
                     <span *ngIf="state.sortColumn === 'name'">
-                        {{ state.sortDirection ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
                     </span>
                 </th>
                 <th (click)="toggleSort('email')">
                     Email
                     <span *ngIf="state.sortColumn === 'email'">
-                        {{ state.sortDirection ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
                     </span>
                 </th>
                 <th (click)="toggleSort('phoneNumber')">
                     Phone
                     <span *ngIf="state.sortColumn === 'phoneNumber'">
-                        {{ state.sortDirection ? '↑' : '↓' }}
+                        <i nz-icon [nzType]="'caret-up'" *ngIf="state.sortDirection === 'asc'"></i>
+                        <i nz-icon [nzType]="'caret-down'" *ngIf="state.sortDirection === 'desc'"></i>
                     </span>
                 </th>
-                <th>Status</th>
+                <th>Suspension Status</th>
+                <th>Approval Status</th>
             </tr>
         </thead>
-        <tbody *ngIf="!isLoading; else loading">
-            <tr *ngFor="let customer of filteredCustomers">
+        <tbody *ngIf="!isLoading else loading">
+            <tr *ngFor="let customer of filteredCustomers; trackBy: trackByCustomerId">
                 <td>
-                    <img *ngIf="customer.photoUrl" [src]="customer.photoUrl" alt="Photo" width="50" height="50" />
-                    <span *ngIf="!customer.photoUrl">No Image</span>
+                    <img *ngIf="customer.photoUrl; else defaultImage" [src]="customer.photoUrl" alt="Photo" width="50"
+                        height="50" />
+                    <ng-template #defaultImage>
+                        <img src="assets/images/user/defaultuser.jpg" alt="Default Photo" width="50" height="50" />
+                    </ng-template>
                 </td>
                 <td>{{ customer.name }}</td>
                 <td>{{ customer.email || 'N/A' }}</td>
                 <td>{{ customer.phoneNumber || 'N/A' }}</td>
                 <td>
-                    <button (click)="toggleSuspend(customer)" [ngClass]="{
-                'approve': customer.isSuspended === null,
+                    <button (click)="toggleSuspension(customer)" [ngClass]="{
                 'suspend': customer.isSuspended === true,
                 'reactivate': customer.isSuspended === false
               }" class="status-btn">
                         {{ getStatusLabel(customer.isSuspended) }}
                     </button>
                 </td>
+                <td>
+                    <button (click)="toggleApproval(customer)" [ngClass]="{
+                'suspend': customer.isApproved === true,
+                'reactivate': customer.isApproved === false
+              }" class="status-btn">
+                        {{ customer.isApproved ? 'Reject' : 'Approve' }}
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
+
+    <div *ngIf="isError" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
 </div>
 
 <ng-template #loading>

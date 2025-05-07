@@ -14,65 +14,52 @@ export class PartnerService {
   private apiUrlPartnerExtraDetails = '/api/administrator/getPartnerExtraDetails';
   private apiUrlPartnerPackage = '/api/administrator/getPartnerPackages';
   private apiUrladdPartnerPackage = '/api/administrator/addPartnerPackage';
-
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-  }
+  private regionApi = '';
 
   getAllPartners(): Observable<any[]> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    return this.http.post<any[]>(this.apiUrl, {}, { headers }).pipe(
+    return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(
       tap((response) => {
         console.log('Partners response:', response);
       })
     );
   }
 
-  suspendUser(userId: string, isSuspended: boolean) {
-    const params = new HttpParams().set('userId', userId).set('isSuspended', isSuspended.toString());
+  // suspendUser(userId: string, isSuspended: boolean) {
+  //   const params = new HttpParams().set('userId', userId).set('isSuspended', isSuspended.toString());
 
-    return this.http.post<any[]>(
-      this.apiUrlSuspend,
-      {},
-      {
-        headers: this.getAuthHeaders(),
-        params: params // Attach params here
-      }
-    );
-  }
+  //   return this.http.post<any[]>(
+  //     this.apiUrlSuspend,
+  //     {},
+  //     {
+  //       params: params
+  //     }
+  //   );
+  // }
 
   getPartnerExtraDetails(partnerId: string) {
     const url = `${this.apiUrlPartnerExtraDetails}?partnerId=${partnerId}`;
-    return this.http.post<any>(url, {}, { headers: this.getAuthHeaders() });
+    return this.http.post<any>(url, {}, {});
   }
 
   gePartnerPackage(partnerId: string) {
     const url = `${this.apiUrlPartnerPackage}?partnerId=${partnerId}`;
-    return this.http.post<any[]>(url, {}, { headers: this.getAuthHeaders() });
+    return this.http.post<any[]>(url, {}, {});
   }
-
 
   addPartnerPackage(idpartner: number, partnerPackage: PartnerPackage): Observable<any> {
-    console.log('service:',partnerPackage);
-    console.log('id service:',partnerPackage);
+    console.log('service:', partnerPackage);
+    console.log('id service:', partnerPackage);
     const url = `${this.apiUrladdPartnerPackage}?partnerId=${idpartner}`;
-    return this.http.post<any>(
-      url,
-      partnerPackage, // request body
-      { headers: this.getAuthHeaders() }
-    ).pipe(
-      tap(response => {
-        console.log('Add Partner Package response:', response);
-      })
-    );
+    return this.http
+      .post<any>(
+        url,
+        partnerPackage, // request body
+        {}
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Add Partner Package response:', response);
+        })
+      );
   }
-  
-  
 }

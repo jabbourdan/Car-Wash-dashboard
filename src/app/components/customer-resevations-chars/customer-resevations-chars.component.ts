@@ -1,4 +1,4 @@
-import { Component,viewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { ReservationModel } from 'src/app/models/reservation.model';
@@ -11,12 +11,12 @@ import { ReservationService } from 'src/app/services/reservation.service';
   styleUrl: './customer-resevations-chars.component.scss'
 })
 export class CustomerResevationsCharsComponent {
-// public props
+  // public props
   chart = viewChild.required<ChartComponent>('chart');
   chartOptions!: Partial<ApexOptions>;
   reservations: ReservationModel[] = [];
-  
- constructor(
+
+  constructor(
     private router: Router,
     private reservationService: ReservationService
   ) {}
@@ -47,13 +47,13 @@ export class CustomerResevationsCharsComponent {
   }
 
   loadReservations(): void {
-    this.reservationService.getAllReservationss().subscribe({
+    this.reservationService.getAllReservations().subscribe({
       next: (data) => {
         this.reservations = data;
 
         const customerCounts: { [key: string]: number } = {};
 
-        data.forEach(res => {
+        data.forEach((res) => {
           const customerName = res.customer?.name || 'Unknown';
           customerCounts[customerName] = (customerCounts[customerName] || 0) + 1;
         });

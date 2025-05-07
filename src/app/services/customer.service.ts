@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Customer } from '../models/customer.model';
 
 @Injectable({
@@ -12,26 +12,13 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {}
 
-  // private getAuthHeaders(): HttpHeaders {
-  //   const token = localStorage.getItem('authToken');
-  //   return new HttpHeaders({
-  //     Authorization: `Bearer ${token}`
-  //   });
-  // }
-
   getAllCustomers(): Observable<Customer[]> {
-    return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(map((data) => data.map((json) => Customer.fromJson(json))));
-  }
-
-  suspendUser(userId: string, isSuspended: boolean) {
-    const params = new HttpParams().set('userId', userId).set('isSuspended', isSuspended.toString());
-
-    return this.http.post<any[]>(
-      this.apiUrlSuspend,
-      {},
-      {
-        params: params
-      }
+    return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(
+      map((data) => data.map(Customer.fromJson)),
+      catchError((error) => {
+        console.error('Error fetching customers', error);
+        return throwError(() => new Error('Failed to load customers'));
+      })
     );
   }
 }
