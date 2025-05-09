@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PartnerService } from '../services/partner.service';
 import { PartnerPackage, PartnerPriceDTO, Question, RegionDto, ServiceProduct } from '../models/test';
 import { CommonModule } from '@angular/common';
+import { PartnerExtraDetails } from '../models/partnerExtraDetails';
 
 @Component({
   selector: 'app-add-partner-package-and-questions',
@@ -16,7 +17,7 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   selectedRegion = new RegionDto('', '', '', '');
   selectedServices: ServiceProduct[] = [];
 
-  constructor(private service: PartnerService) {}
+  constructor(private service: PartnerService) { }
 
   ngOnInit(): void {
     this.service.getRegions('IL').subscribe((res) => {
@@ -53,63 +54,53 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
       this.selectedServices = this.selectedServices.filter((s) => s.id !== service.id);
     }
   }
-
   addPackage(): void {
-    const region = RegionDto.fromJson(this.selectedRegion);
-
-    const packageModel = new PartnerPackage(
-      crypto.randomUUID(),
-      '17',
-      region.country,
-      region.countryCode,
-      region.city,
-      'Basic Package',
-      'USD',
-      { note: 'Auto-generated package' },
-      this.selectedServices.map((s) => {
-        const product = ServiceProduct.fromJson(s);
-        product.status = product.status ?? 'Publish';
-        return product;
-      }),
-      [
-        ServiceProduct.fromJson({
-          id: crypto.randomUUID(),
-          productCode: 'STOCK001',
-          internalID: 'INT001',
-          name: 'Stock Product 1',
-          description: 'This is a stock item',
-          price: 20,
-          currency: 'USD',
-          externalID: 'EXT001',
-          status: 'Publish',
-          salePercentage: 0,
-          systemProfitPercentage: 15,
-          generalCosts: 3,
-          categoryDTOList: [],
-          images: [],
-          tags: []
-        })
-      ],
-      [new Question(crypto.randomUUID(), 'What is your car brand?', 0, 'Any brand', true)],
-      true
-    );
-
-    console.log('Final payload:', JSON.stringify(packageModel.toJson(), null, 2));
-
-    this.service.getAllPartners().subscribe((partners) => {
-      const partnerId = partners[0]?.id;
-      if (!partnerId) {
-        alert('No partner ID found');
-        return;
-      }
-
-      this.service.addPartnerPackage(partnerId, packageModel).subscribe({
-        next: () => alert('Package added successfully'),
-        error: (err) => {
-          console.error('API rejected payload:', err);
-          alert('Failed to add package. Check console for details.');
+    const region = this.selectedRegion;
+    const partnerId = "1ee9019a-ce74-46c2-b7d9-d4b31dab14b4";
+  
+    const partnerPackage = {
+      id: crypto.randomUUID(), // Add a unique ID
+      countryCode: "IL",
+      country: "Israel",
+      city: "Haifa",
+      packageName: "test",
+      currency: "usd",
+      numberOfServices: 5,
+      active: true,
+      vat: 0.17, // Add VAT if required
+      regionDTOs: [
+        {
+          id: region.id,
+          countryCode: region.countryCode,
+          country: region.country,
+          city: region.city
         }
-      });
+      ],
+      serviceProducts: this.selectedServices.map((service) => ({
+        id: service.id,
+        internalID: service.internalID,
+        name: service.name,
+        description: service.description,
+        price: service.price
+      })),
+      stockProducts: [], // Add stock products if required
+      questions: [], // Add questions if required
+      extraDetails: {
+        duration: "1",
+        packageDescription: "dgfgfdg",
+        PrivateCars: 50,
+        VansOrSimilar: 100,
+        SUVs: 100,
+        Caravans: 100,
+        numberOfServices: 5
+      },
+      partnerId: partnerId,
+      toJson: () => JSON.stringify(this) // Add a `toJson` method if required
+    };
+  
+    this.service.addPartnerPackage(partnerId, partnerPackage).subscribe({
+      next: (res) => console.log('Package added successfully:', res),
+      error: (err) => console.error('Error adding package:', err)
     });
   }
 }

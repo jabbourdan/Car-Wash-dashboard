@@ -1,0 +1,43 @@
+{
+    "countryCode": "IL",
+    "country": "Israel",
+    "city": "Haifa",
+    "packageName": "test",
+    "currency": "usd",
+    "PrivateCars": 50,
+    "VansOrSimilar": 100,
+    "SUVs": 100,
+    "Caravans": 100,
+    "numberOfServices": 5,
+    "questions": [],
+    "vat": 0.17,
+    "active": true,
+    "regionDTOs": [
+        {
+            "id": "c6e79bfb-ae70-49c1-a8c9-9bb80044fff0",
+            "countryCode": "IL",
+            "country": "Israel",
+            "city": "Haifa"
+        }
+    ],
+    "stockProducts": [],
+    "serviceProducts": [
+        {
+            "id": "06a965fe-b54a-4e10-b871-5938ea53f9b4",
+            "internalID": "00d777e9-5180-4108-8fdc-c639ac0640f5",
+            "name": "Car seat cleaning",
+            "description": "Car Seat Cleaning",
+            "price": 2
+        }
+    ],
+    "extraDetails": {
+        "duration": "1",
+        "packageDescription": "dgfgfdg",
+        "PrivateCars": 50,
+        "VansOrSimilar": 100,
+        "SUVs": 100,
+        "Caravans": 100,
+        "numberOfServices": 5
+    },
+    "partnerId": "1ee9019a-ce74-46c2-b7d9-d4b31dab14b4"
+}

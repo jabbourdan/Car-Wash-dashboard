@@ -90,16 +90,8 @@ export class PartnerService {
       .pipe(tap((res) => console.log('Services for Region response:', res)));
   }
 
-  addPartnerPackage(partnerId: string, partnerPackage: PartnerPackage): Observable<any> {
+  addPartnerPackage(partnerId: string, packagePayload: any): Observable<any> {
     const url = `${this.apiUrladdPartnerPackage}?partnerId=${partnerId}`;
-    console.log('Sending partner package data:', partnerPackage.toJson());
-
-    return this.http.post<any>(url, partnerPackage.toJson()).pipe(
-      tap((response) => console.log('Add Partner Package response:', response)),
-      catchError((error) => {
-        console.error('Error during adding partner package:', error);
-        throw error;
-      })
-    );
+    return this.http.post<any>(url, packagePayload);
   }
 }
