@@ -1,102 +1,27 @@
-<div>
-    <h1>Add Partner Package</h1>
-    <form  class="form m-4">
-  
-      <!-- Main Fields -->
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Package Name</label>
-          <input [(ngModel)]="partnerPackageObj.packageName" name="packageName" required>
-        </div>
-        <div class="form-group col-md-4">
-          <label>VAT</label>
-          <input   [(ngModel)]="partnerPackageObj.vat" name="vat" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>Country</label>
-          <input   [(ngModel)]="partnerPackageObj.country" name="country" required/>
-        </div>
-      </div>
-  
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Country Code</label>
-          <input   [(ngModel)]="partnerPackageObj.countryCode" name="countryCode" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>City</label>
-          <input   [(ngModel)]="partnerPackageObj.city" name="city" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>Currency</label>
-          <input  class="form-control" [(ngModel)]="partnerPackageObj.currency" name="currency" required/>
-        </div>
-      </div>
-  
-      <!-- <h3>Extra Details (Optional)</h3>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Duration</label>
-          <input   [(ngModel)]="extraPackageDetailsObj.duration" name="duration" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>Description</label>
-          <input  [(ngModel)]="extraPackageDetailsObj.packageDescription" name="packageDescription" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>Private Cars</label>
-          <input   [(ngModel)]="extraPackageDetailsObj.PrivateCars" name="PrivateCars" required/>
-        </div>
-      </div>
-  
-      <div  class="form-row">
-        <div class="form-group col-md-4">
-          <label>Vans or Similar</label>
-          <input  [(ngModel)]="extraPackageDetailsObj.VansOrSimilar" name="VansOrSimilar" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>SUVs</label>
-          <input   [(ngModel)]="extraPackageDetailsObj.SUVs" name="SUVs" required/>
-        </div>
-        <div class="form-group col-md-4">
-          <label>Number of Services</label>
-          <input   [(ngModel)]="extraPackageDetailsObj.numberOfServices" name="numberOfServices" required/>
-        </div>
-      </div>
-   -->
-      <!-- Questions Section -->
-      <!-- <h3>Questions (Optional)</h3>
-      <div >
-        <div *ngFor="let question of questionsFormArray.controls; let i = index" [formGroupName]="i" class="form-row border p-2 mb-2">
-          <div class="form-group col-md-4">
-            <label>Question Text</label>
-            <input class="form-control"  [(ngModel)]="partnerPackageObj.text"/>
-          </div>
-          <div class="form-group col-md-2">
-            <label>Type</label>
-            <input type="number" class="form-control"  [(ngModel)]="partnerPackageObj.type"/>
-          </div>
-          <div class="form-group col-md-4">
-            <label>Expected Answer</label>
-            <input class="form-control" [(ngModel)]="partnerPackageObj.expectedAnswer"/>
-          </div>
-          <div class="form-group col-md-2">
-            <label>Mandatory</label><br />
-            <input type="checkbox" [(ngModel)]="partnerPackageObj.mandatory"/>
-          </div>
-          <div class="form-group col-md-1 d-flex align-items-end">
-            <button class="btn btn-danger" type="button" (click)="removeQuestion(i)">Remove</button>
-          </div>
-        </div>
-      </div> -->
-  
-      <!-- <button class="btn btn-secondary mb-3" type="button" (click)="addQuestion()">+ Add Question</button> -->
-  
-      <!-- Actions -->
-      <div class="form-group">
-        <button class="btn btn-primary" (click)="addPackage()">Save</button>
-        <button class="btn btn-danger" (click)="backAllCompanies()">Cancel</button>
-      </div>
-    </form>
+<div class="dialog-content" style="padding: 16px; min-width: 300px;">
+  <h2>Add Partner Package</h2>
+
+  <label for="region-select"><strong>Select Region:</strong></label>
+  <select id="region-select" *ngIf="regions?.length > 0" (change)="onRegionSelect($event)">
+    <option disabled selected value="">-- Choose a region --</option>
+    <option *ngFor="let region of regions" [value]="region.id">
+      {{ region.country }} - {{ region.city }}
+    </option>
+  </select>
+
+  <div *ngIf="selectedRegion && services?.length > 0" style="margin-top: 16px;">
+    <label><strong>Select Services:</strong></label>
+    <div *ngFor="let service of services">
+      <label>
+        <input type="checkbox" (change)="toggleService(service, $event)">
+        {{ service.name }} ({{ service.price }} {{ service.currency }})
+      </label>
+    </div>
   </div>
-  
+
+  <div *ngIf="selectedRegion && services.length === 0" style="margin-top: 12px; color: gray;">
+    No services available for the selected region.
+  </div>
+
+  <button (click)="addPackage()" style="margin-top: 24px;">Add Package</button>
+</div>

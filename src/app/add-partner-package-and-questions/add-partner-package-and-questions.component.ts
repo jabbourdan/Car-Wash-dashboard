@@ -1,75 +1,115 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { PartnerPackage } from '../models/partnerPackage';
-import { ExtraPackageDetails } from '../models/extraPackageDetails';
-import { Question } from '../models/question';
+import { Component, OnInit } from '@angular/core';
 import { PartnerService } from '../services/partner.service';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { PartnerPackage, PartnerPriceDTO, Question, RegionDto, ServiceProduct } from '../models/test';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-partner-package-and-questions',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    FormsModule,
-  ],
   templateUrl: './add-partner-package-and-questions.component.html',
-  styleUrls: ['./add-partner-package-and-questions.component.scss']
+  styleUrls: ['./add-partner-package-and-questions.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class AddPartnerPackageAndQuestionsComponent implements OnInit {
-  packageForm: FormGroup;
-  public partnerPackageObj: PartnerPackage = new PartnerPackage(null, '', '', '', '', '', '');
-  public extraPackageDetailsObj: ExtraPackageDetails = new ExtraPackageDetails(null, '', '', '', '', '', '');
+  regions: RegionDto[] = [];
+  services: ServiceProduct[] = [];
+  selectedRegion = new RegionDto('', '', '', '');
+  selectedServices: ServiceProduct[] = [];
 
-  constructor(
-    private partnerService: PartnerService,
-    public dialogRef: MatDialogRef<AddPartnerPackageAndQuestionsComponent>,
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any 
-  ) {}
+  constructor(private service: PartnerService) {}
 
   ngOnInit(): void {
+    this.service.getRegions('IL').subscribe((res) => {
+      this.regions = res;
+    });
   }
 
- 
-
-  addQuestion(): void {
-
+  onRegionSelect(event: Event): void {
+    const regionId = (event.target as HTMLSelectElement).value;
+    const region = this.regions.find((r) => r.id === regionId);
+    if (region) {
+      this.selectedRegion = region;
+      this.fetchServicesForRegion(region);
+    }
   }
 
-  removeQuestion(index: number): void {
+  fetchServicesForRegion(region: RegionDto): void {
+    this.service.getServicesForRegion(region).subscribe(
+      (res) => {
+        this.services = res?.services?.map((s: any) => ServiceProduct.fromJson(s)) || [];
+      },
+      (error) => {
+        console.error('Error fetching services for region', error);
+        this.services = [];
+      }
+    );
+  }
+
+  toggleService(service: ServiceProduct, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedServices.push(service);
+    } else {
+      this.selectedServices = this.selectedServices.filter((s) => s.id !== service.id);
+    }
   }
 
   addPackage(): void {
-    this.partnerPackageObj.extraDetails=this.extraPackageDetailsObj
-    console.log('id:', this.data.partnerId);
+    const region = RegionDto.fromJson(this.selectedRegion);
 
-    console.log('After User Input ALl:', this.partnerPackageObj);
-    console.log('After User Input Extra Package Details :', this.extraPackageDetailsObj);
-    this.partnerService.addPartnerPackage(this.data.partnerId,this.partnerPackageObj).subscribe((data) => {
-      if (data) {
-      console.log("yees")
-      } else {
-        console.log("nooo")
+    const packageModel = new PartnerPackage(
+      crypto.randomUUID(),
+      '17',
+      region.country,
+      region.countryCode,
+      region.city,
+      'Basic Package',
+      'USD',
+      { note: 'Auto-generated package' },
+      this.selectedServices.map((s) => {
+        const product = ServiceProduct.fromJson(s);
+        product.status = product.status ?? 'Publish';
+        return product;
+      }),
+      [
+        ServiceProduct.fromJson({
+          id: crypto.randomUUID(),
+          productCode: 'STOCK001',
+          internalID: 'INT001',
+          name: 'Stock Product 1',
+          description: 'This is a stock item',
+          price: 20,
+          currency: 'USD',
+          externalID: 'EXT001',
+          status: 'Publish',
+          salePercentage: 0,
+          systemProfitPercentage: 15,
+          generalCosts: 3,
+          categoryDTOList: [],
+          images: [],
+          tags: []
+        })
+      ],
+      [new Question(crypto.randomUUID(), 'What is your car brand?', 0, 'Any brand', true)],
+      true
+    );
 
+    console.log('Final payload:', JSON.stringify(packageModel.toJson(), null, 2));
+
+    this.service.getAllPartners().subscribe((partners) => {
+      const partnerId = partners[0]?.id;
+      if (!partnerId) {
+        alert('No partner ID found');
+        return;
       }
+
+      this.service.addPartnerPackage(partnerId, packageModel).subscribe({
+        next: () => alert('Package added successfully'),
+        error: (err) => {
+          console.error('API rejected payload:', err);
+          alert('Failed to add package. Check console for details.');
+        }
+      });
     });
   }
-  
-
-  backAllCompanies(): void {
-  }
-
-
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
-import { PartnerPackage } from '../models/partnerPackage';
+import { catchError, map, Observable, tap } from 'rxjs';
+import { PartnerPackage, RegionDto, ServiceProduct } from '../models/test';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class PartnerService {
   private apiUrlPartnerExtraDetails = '/api/administrator/getPartnerExtraDetails';
   private apiUrlPartnerPackage = '/api/administrator/getPartnerPackages';
   private apiUrladdPartnerPackage = '/api/administrator/addPartnerPackage';
-  private regionApi = '';
+  private regionApi = '/api/administrator/regions/get';
 
   getAllPartners(): Observable<any[]> {
     return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(
@@ -46,20 +46,60 @@ export class PartnerService {
     return this.http.post<any[]>(url, {}, {});
   }
 
-  addPartnerPackage(idpartner: number, partnerPackage: PartnerPackage): Observable<any> {
-    console.log('service:', partnerPackage);
-    console.log('id service:', partnerPackage);
-    const url = `${this.apiUrladdPartnerPackage}?partnerId=${idpartner}`;
+  // addPartnerPackage(idpartner: string, partnerPackage: PartnerPackage): Observable<any> {
+  //   console.log('service:', partnerPackage);
+  //   console.log('id service:', partnerPackage);
+  //   const url = `${this.apiUrladdPartnerPackage}?partnerId=${idpartner}`;
+  //   return this.http
+  //     .post<any>(
+  //       url,
+  //       partnerPackage.toJson(), // request body
+  //       {}
+  //     )
+  //     .pipe(
+  //       tap((response) => {
+  //         console.log('Add Partner Package response:', response);
+  //       })
+  //     );
+  // }
+
+  // addPartnerPackagee(partnerId: string, packageData: PartnerPackage) {
+  //   const params = new HttpParams().set('partnerId', partnerId);
+  //   return this.http.post(`${this.apiUrladdPartnerPackage}/addPartnerPackage`, packageData.toJson(), { params });
+  // }
+
+  getRegions(countryCode: string): Observable<RegionDto[]> {
+    const params = new HttpParams().set('countryCode', countryCode);
     return this.http
-      .post<any>(
-        url,
-        partnerPackage, // request body
-        {}
-      )
-      .pipe(
-        tap((response) => {
-          console.log('Add Partner Package response:', response);
-        })
-      );
+      .post<RegionDto[]>(`${this.regionApi}`, {}, { params })
+      .pipe(tap((response) => console.log('Regions response:', response)));
+  }
+
+  getServicesForRegion(region: RegionDto): Observable<any> {
+    const body = [
+      {
+        id: region.id,
+        countryCode: region.countryCode,
+        country: region.country,
+        city: region.city
+      }
+    ];
+
+    return this.http
+      .post<any>('/api/administrator/store/services/get', body)
+      .pipe(tap((res) => console.log('Services for Region response:', res)));
+  }
+
+  addPartnerPackage(partnerId: string, partnerPackage: PartnerPackage): Observable<any> {
+    const url = `${this.apiUrladdPartnerPackage}?partnerId=${partnerId}`;
+    console.log('Sending partner package data:', partnerPackage.toJson());
+
+    return this.http.post<any>(url, partnerPackage.toJson()).pipe(
+      tap((response) => console.log('Add Partner Package response:', response)),
+      catchError((error) => {
+        console.error('Error during adding partner package:', error);
+        throw error;
+      })
+    );
   }
 }
