@@ -63,9 +63,10 @@ export class PartnerService {
     return this.http.post<any>(url, packagePayload);
   }
 
-updateQuestion(partnerId: string, packageId: string, questionUpdate: any): Observable<any> {
+updateQuestion(partnerId: string, packageId: string, questionUpdate: any[]): Observable<any> {
   const url = `${this.updateQuestionsApi}?partnerId=${partnerId}&packageId=${packageId}`;
   return this.http.post<any>(url, questionUpdate);
 }
+
 
 }

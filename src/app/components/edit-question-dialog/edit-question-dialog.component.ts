@@ -27,26 +27,25 @@ constructor(
   
 
     ngOnInit(): void {
-    console.log("Received data in dialog:", this.data.packageId, this.data.partnerId, this.data.question);
       this.packageId = this.data.packageId;
     this.partnerId = this.data.partnerId;
     this.question = this.data.question;  
   }
-
-  onSubmit(form: any): void {
-    if (form.valid) {
-      // Call your service to update the question
-      this.service.updateQuestion(this.packageId, this.partnerId, this.question).subscribe(
-        (response) => {
-          console.log('Question updated successfully:', response);
-          this.dialogRef.close(response); // Close the dialog and return the updated response
-        },
-        (error) => {
-          console.error('Error updating question:', error);
-        }
-      );
-    } else {
-      console.log("Form is invalid");
-    }
+onSubmit(form: any): void {
+  if (form.valid) {
+    // Send the question as an array
+    this.service.updateQuestion(this.partnerId,this.packageId, [this.question]).subscribe(
+      (response) => {
+        console.log('Question updated successfully:', response);
+        this.dialogRef.close(response); // Close the dialog and return the updated response
+      },
+      (error) => {
+        console.error('Error updating question:', error);
+      }
+    );
+  } else {
+    console.log("Form is invalid");
   }
+}
+
 }

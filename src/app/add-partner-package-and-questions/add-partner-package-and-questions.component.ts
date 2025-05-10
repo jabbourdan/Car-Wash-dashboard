@@ -54,7 +54,7 @@ showQuestionsSection = false;
 
   ngOnInit(): void {
     const countryCode = this.data.countryCode;
-    this.service.getRegions(countryCode).subscribe((res) => {
+    this.service.getRegions('IL').subscribe((res) => {
       this.regions = res;
     });
   }

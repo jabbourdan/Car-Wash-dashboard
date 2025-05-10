@@ -133,3 +133,49 @@
 .add-package-btn:hover {
   background-color: #1565c0;
 }
+.edit-question-btn {
+  background-color: #007bff; /* Bootstrap blue */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-question-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.edit-question-btn:active {
+  background-color: #004080;
+  transform: scale(1);
+}
+
+.edit-question-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+.add-question-btn {
+  background-color: #28a745; /* Green */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-question-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.add-question-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(72, 180, 97, 0.4);
+}
