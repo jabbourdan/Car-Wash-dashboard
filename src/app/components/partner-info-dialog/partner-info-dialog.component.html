@@ -65,16 +65,20 @@
     <!-- <p><strong>Raw Questions:</strong> {{ pkg.questions }}</p> -->
 
     <!-- Questions Section -->
-    <div *ngIf="pkg.questions?.length">
-      <h5>Questions:</h5>
-      <div *ngFor="let question of pkg.questions; let i = index" class="question-block">
-        <p><strong>#{{ i + 1 }}</strong></p>
-        <p><strong>Text:</strong> {{ question.text }}</p>
-        <p><strong>Type:</strong> {{ question.type }}</p>
-        <p><strong>Expected Answer:</strong> {{ question.expectedAnswer }}</p>
-        <p><strong>Mandatory:</strong> {{ question.mandatory ? 'Yes' : 'No' }}</p>
-      </div>
-    </div>
+<div *ngIf="pkg.questions?.length">
+  <h5>Questions:</h5>
+  <div *ngFor="let question of pkg.questions; let i = index" class="question-block">
+    <p><strong>#{{ i + 1 }}</strong></p>
+    <p><strong>Text:</strong> {{ question.text }}</p>
+    <p><strong>Type:</strong> {{ question.type }}</p>
+    <p><strong>Expected Answer:</strong> {{ question.expectedAnswer }}</p>
+    <p><strong>Mandatory:</strong> {{ question.mandatory ? 'Yes' : 'No' }}</p>
+
+    <button class="edit-question-btn" (click)="openEditQuestionDialog(pkg.id, question)">Edit Question</button>
+  </div>
+</div>
+
+
   </div>
 </div>
 

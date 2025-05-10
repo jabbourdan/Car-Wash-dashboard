@@ -11,6 +11,8 @@ import { PartnerDataService } from 'src/app/services/partner-data.service';
 import { PartnerService } from 'src/app/services/partner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPartnerPackageAndQuestionsComponent } from 'src/app/add-partner-package-and-questions/add-partner-package-and-questions.component';
+import { EditQuestionDialogComponent } from '../edit-question-dialog/edit-question-dialog.component';
+import { Question } from 'src/app/models/question';
 
 @Component({
   selector: 'app-partner-info-dialog',
@@ -106,5 +108,27 @@ openAddPackageDialog(): void {
   });
   this.gePartnerPackage();
 }
+
+
+openEditQuestionDialog(packageId: string, question: Question): void {
+  const dialogRef = this.dialog.open(EditQuestionDialogComponent, {
+    width: '600px',
+    data: { 
+      packageId: packageId,
+      partnerId: this.partnerId,
+      question: question 
+    }
+  });
+
+  dialogRef.afterClosed().subscribe((res) => {
+    if (res) {
+      // Handle response if needed
+      console.log("Dialog closed with result:", res);
+    }
+  });
+}
+
+
+
 
 }

@@ -15,6 +15,7 @@ export class PartnerService {
   private apiUrlPartnerPackage = '/api/administrator/getPartnerPackages';
   private apiUrladdPartnerPackage = '/api/administrator/addPartnerPackage';
   private regionApi = '/api/administrator/regions/get';
+   private updateQuestionsApi = '/api/administrator/package/questions/update';
 
   getAllPartners(): Observable<any[]> {
     return this.http.post<any[]>(this.apiUrl, {}, {}).pipe(
@@ -61,4 +62,10 @@ export class PartnerService {
     const url = `${this.apiUrladdPartnerPackage}?partnerId=${partnerId}`;
     return this.http.post<any>(url, packagePayload);
   }
+
+updateQuestion(partnerId: string, packageId: string, questionUpdate: any): Observable<any> {
+  const url = `${this.updateQuestionsApi}?partnerId=${partnerId}&packageId=${packageId}`;
+  return this.http.post<any>(url, questionUpdate);
+}
+
 }
