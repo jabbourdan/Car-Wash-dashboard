@@ -82,20 +82,29 @@ export class PartnerInfoDialogComponent {
   goBackToPartnersList() {
     this.router.navigate(['/allPartners']);
   }
+openAddPackageDialog(): void {
+  const firstCountryCode = this.regionsList.length > 0 ? this.regionsList[0].countryCode : null;
 
-  openAddPackageDialog(): void {
-    const dialogRef = this.dialog.open(AddPartnerPackageAndQuestionsComponent, {
-      width: '1500px',
-      height: '600px',
-      data: { partnerId: this.partnerId }
-    });
+  const dialogRef = this.dialog.open(AddPartnerPackageAndQuestionsComponent, {
+    width: '1500px',
+    height: '600px',
+    data: { 
+      partnerId: this.partnerId,
+      countryCode: firstCountryCode
+    }
+    
+  });
+  this.gePartnerPackage();
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('New package:', result);
-        // Optionally add the package to your list:
-        this.partnerPackagesList.push(result);
-      }
-    });
-  }
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result) {
+      console.log('New package:', result);
+      this.partnerPackagesList.push(result);
+      this.gePartnerPackage();
+    }
+    this.gePartnerPackage();
+  });
+  this.gePartnerPackage();
+}
+
 }

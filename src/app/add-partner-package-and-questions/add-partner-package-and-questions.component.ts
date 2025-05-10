@@ -1,26 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { PartnerService } from '../services/partner.service';
 import { PartnerPackage, PartnerPriceDTO, Question, RegionDto, ServiceProduct } from '../models/test';
 import { CommonModule } from '@angular/common';
 import { PartnerExtraDetails } from '../models/partnerExtraDetails';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-add-partner-package-and-questions',
   templateUrl: './add-partner-package-and-questions.component.html',
   styleUrls: ['./add-partner-package-and-questions.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
+
 })
 export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   regions: RegionDto[] = [];
   services: ServiceProduct[] = [];
-  selectedRegion = new RegionDto('', '', '', '');
+  selectedRegion: RegionDto = new RegionDto('', '', '', '');
   selectedServices: ServiceProduct[] = [];
 
-  constructor(private service: PartnerService) { }
+  packageName: string = '';
+  currency: string = '';
+  vat: number = 0;
+  privateCars: number = 0;
+  vansOrSimilar: number = 0;
+  suvs: number = 0;
+  caravans: number = 0;
+  numberOfServices: number = 0;
+  duration: string = '';
+  packageDescription: string = '';
+
+  constructor(
+    private service: PartnerService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<AddPartnerPackageAndQuestionsComponent>
+  ) {}
 
   ngOnInit(): void {
-    this.service.getRegions('IL').subscribe((res) => {
+    const countryCode = this.data.countryCode;
+    this.service.getRegions(countryCode).subscribe((res) => {
       this.regions = res;
     });
   }
@@ -54,53 +76,62 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
       this.selectedServices = this.selectedServices.filter((s) => s.id !== service.id);
     }
   }
+
   addPackage(): void {
-    const region = this.selectedRegion;
-    const partnerId = "1ee9019a-ce74-46c2-b7d9-d4b31dab14b4";
-  
-    const partnerPackage = {
-      id: crypto.randomUUID(), // Add a unique ID
-      countryCode: "IL",
-      country: "Israel",
-      city: "Haifa",
-      packageName: "test",
-      currency: "usd",
-      numberOfServices: 5,
-      active: true,
-      vat: 0.17, // Add VAT if required
-      regionDTOs: [
-        {
-          id: region.id,
-          countryCode: region.countryCode,
-          country: region.country,
-          city: region.city
-        }
-      ],
-      serviceProducts: this.selectedServices.map((service) => ({
-        id: service.id,
-        internalID: service.internalID,
-        name: service.name,
-        description: service.description,
-        price: service.price
-      })),
-      stockProducts: [], // Add stock products if required
-      questions: [], // Add questions if required
-      extraDetails: {
-        duration: "1",
-        packageDescription: "dgfgfdg",
-        PrivateCars: 50,
-        VansOrSimilar: 100,
-        SUVs: 100,
-        Caravans: 100,
-        numberOfServices: 5
-      },
-      partnerId: partnerId,
-      toJson: () => JSON.stringify(this) // Add a `toJson` method if required
-    };
-  
-    this.service.addPartnerPackage(partnerId, partnerPackage).subscribe({
-      next: (res) => console.log('Package added successfully:', res),
-      error: (err) => console.error('Error adding package:', err)
-    });
-  }
+  const region = this.selectedRegion;
+  const partnerId = this.data.partnerId;
+
+  const partnerPackage = {
+    id: crypto.randomUUID(),
+    countryCode: region.countryCode,
+    country: region.country,
+    city: region.city,
+    packageName: this.packageName,
+    currency: this.currency,
+    PrivateCars: this.privateCars,
+    VansOrSimilar: this.vansOrSimilar,
+    SUVs: this.suvs,
+    Caravans: this.caravans,
+    numberOfServices: this.numberOfServices,
+    vat: this.vat,
+    active: true,
+    regionDTOs: [region],
+    serviceProducts: this.selectedServices,
+    stockProducts: [],
+    questions: [],
+    extraDetails: {
+      duration: this.duration,
+      packageDescription: this.packageDescription,
+      PrivateCars: this.privateCars,
+      VansOrSimilar: this.vansOrSimilar,
+      SUVs: this.suvs,
+      Caravans: this.caravans,
+      numberOfServices: this.numberOfServices
+    },
+    partnerId: partnerId
+  };
+
+  this.service.addPartnerPackage(partnerId, partnerPackage).subscribe({
+ next: (res) => {
+  Swal.fire({
+    title: 'Success!',
+    text: 'Partner package added successfully.',
+    icon: 'success',
+    confirmButtonText: 'OK'
+  }).then(() => {
+    this.dialogRef.close(res); // Close the dialog and return the new package
+  });
+},
+    error: (err) => {
+      console.error('Error adding package:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'Something went wrong while adding the package.',
+        icon: 'error',
+        confirmButtonText: 'Close'
+      });
+    }
+  });
+}
+
 }

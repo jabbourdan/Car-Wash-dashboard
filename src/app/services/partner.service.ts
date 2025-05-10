@@ -24,17 +24,6 @@ export class PartnerService {
     );
   }
 
-  // suspendUser(userId: string, isSuspended: boolean) {
-  //   const params = new HttpParams().set('userId', userId).set('isSuspended', isSuspended.toString());
-
-  //   return this.http.post<any[]>(
-  //     this.apiUrlSuspend,
-  //     {},
-  //     {
-  //       params: params
-  //     }
-  //   );
-  // }
 
   getPartnerExtraDetails(partnerId: string) {
     const url = `${this.apiUrlPartnerExtraDetails}?partnerId=${partnerId}`;
@@ -45,28 +34,6 @@ export class PartnerService {
     const url = `${this.apiUrlPartnerPackage}?partnerId=${partnerId}`;
     return this.http.post<any[]>(url, {}, {});
   }
-
-  // addPartnerPackage(idpartner: string, partnerPackage: PartnerPackage): Observable<any> {
-  //   console.log('service:', partnerPackage);
-  //   console.log('id service:', partnerPackage);
-  //   const url = `${this.apiUrladdPartnerPackage}?partnerId=${idpartner}`;
-  //   return this.http
-  //     .post<any>(
-  //       url,
-  //       partnerPackage.toJson(), // request body
-  //       {}
-  //     )
-  //     .pipe(
-  //       tap((response) => {
-  //         console.log('Add Partner Package response:', response);
-  //       })
-  //     );
-  // }
-
-  // addPartnerPackagee(partnerId: string, packageData: PartnerPackage) {
-  //   const params = new HttpParams().set('partnerId', partnerId);
-  //   return this.http.post(`${this.apiUrladdPartnerPackage}/addPartnerPackage`, packageData.toJson(), { params });
-  // }
 
   getRegions(countryCode: string): Observable<RegionDto[]> {
     const params = new HttpParams().set('countryCode', countryCode);

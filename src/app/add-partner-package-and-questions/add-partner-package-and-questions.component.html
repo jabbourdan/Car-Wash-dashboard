@@ -2,14 +2,55 @@
   <h2>Add Partner Package</h2>
 
   <label for="region-select"><strong>Select Region:</strong></label>
-  <select id="region-select" *ngIf="regions?.length > 0" (change)="onRegionSelect($event)">
+  <select id="region-select" *ngIf="regions?.length > 0" (change)="onRegionSelect($event)" [(ngModel)]="selectedRegion.id">
     <option disabled selected value="">-- Choose a region --</option>
     <option *ngFor="let region of regions" [value]="region.id">
       {{ region.country }} - {{ region.city }}
     </option>
   </select>
 
-  <div *ngIf="selectedRegion && services?.length > 0" style="margin-top: 16px;">
+  <div>
+    <label>Package Name:</label>
+    <input [(ngModel)]="packageName" type="text" />
+  </div>
+  <div>
+    <label>Currency:</label>
+    <input [(ngModel)]="currency" type="text" />
+  </div>
+  <div>
+    <label>VAT:</label>
+    <input [(ngModel)]="vat" type="number" step="0.01" />
+  </div>
+  <div>
+    <label>Private Cars:</label>
+    <input [(ngModel)]="privateCars" type="number" />
+  </div>
+  <div>
+    <label>Vans Or Similar:</label>
+    <input [(ngModel)]="vansOrSimilar" type="number" />
+  </div>
+  <div>
+    <label>SUVs:</label>
+    <input [(ngModel)]="suvs" type="number" />
+  </div>
+  <div>
+    <label>Caravans:</label>
+    <input [(ngModel)]="caravans" type="number" />
+  </div>
+  <div>
+    <label>Number Of Services:</label>
+    <input [(ngModel)]="numberOfServices" type="number" />
+  </div>
+  <div>
+    <label>Duration:</label>
+    <input [(ngModel)]="duration" type="text" />
+  </div>
+  <div>
+    <label>Package Description:</label>
+    <input [(ngModel)]="packageDescription" type="text" />
+  </div>
+
+  <div class="services-list" *ngIf="selectedRegion && services?.length > 0">
     <label><strong>Select Services:</strong></label>
     <div *ngFor="let service of services">
       <label>
@@ -17,10 +58,6 @@
         {{ service.name }} ({{ service.price }} {{ service.currency }})
       </label>
     </div>
-  </div>
-
-  <div *ngIf="selectedRegion && services.length === 0" style="margin-top: 12px; color: gray;">
-    No services available for the selected region.
   </div>
 
   <button (click)="addPackage()" style="margin-top: 24px;">Add Package</button>
