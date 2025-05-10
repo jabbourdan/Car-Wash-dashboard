@@ -34,6 +34,36 @@
     }
   }
 
+  .input-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    .input-group {
+      flex: 1;
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #444;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+
+        &:focus {
+          border-color: #1976d2;
+          outline: none;
+        }
+      }
+    }
+  }
+
   .services-list {
     margin-top: 20px;
     padding: 10px;
@@ -64,6 +94,35 @@
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #135ba1;
+    }
+  }
+
+  .add-question-toggle {
+    margin-top: 16px;
+    text-align: left;
+
+    button {
+      width: auto;
+      padding: 6px 12px;
+      font-size: 13px;
+      margin-top: 0;
+    }
+  }
+
+  .question-btn {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 13px;
+    margin-top: 8px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {

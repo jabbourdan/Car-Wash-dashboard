@@ -23,6 +23,7 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   selectedRegion: RegionDto = new RegionDto('', '', '', '');
   selectedServices: ServiceProduct[] = [];
 
+
   packageName: string = '';
   currency: string = '';
   vat: number = 0;
@@ -33,6 +34,17 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
   numberOfServices: number = 0;
   duration: string = '';
   packageDescription: string = '';
+
+
+  //Q
+  text: string = '';
+  type: number = 0;
+  expectedAnswer: string = '';
+  mandatory: boolean = true;
+
+  questions: Question[] = [];
+showQuestionsSection = false;
+  
 
   constructor(
     private service: PartnerService,
@@ -77,6 +89,15 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
     }
   }
 
+  addQuestion() {
+  this.questions.push(new Question('', '', 0, '', true));
+
+}
+
+removeQuestion(index: number) {
+  this.questions.splice(index, 1);
+}
+
   addPackage(): void {
   const region = this.selectedRegion;
   const partnerId = this.data.partnerId;
@@ -98,7 +119,7 @@ export class AddPartnerPackageAndQuestionsComponent implements OnInit {
     regionDTOs: [region],
     serviceProducts: this.selectedServices,
     stockProducts: [],
-    questions: [],
+   questions: this.questions,
     extraDetails: {
       duration: this.duration,
       packageDescription: this.packageDescription,
