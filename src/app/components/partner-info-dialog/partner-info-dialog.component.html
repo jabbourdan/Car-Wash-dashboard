@@ -48,6 +48,10 @@
   </button>
   <h3>Packages</h3>
   <div class="package-card" *ngFor="let pkg of partnerPackagesList">
+    <button class="remove-package-btn" (click)="removePackage(pkg)">
+  🗑️ Remove Package
+</button>
+
     <h4>{{ pkg.packageName }}</h4>
 
     <p><strong>Vat:</strong> {{ pkg.vat }}</p>

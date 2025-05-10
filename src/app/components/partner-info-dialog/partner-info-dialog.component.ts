@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddPartnerPackageAndQuestionsComponent } from 'src/app/add-partner-package-and-questions/add-partner-package-and-questions.component';
 import { EditQuestionDialogComponent } from '../edit-question-dialog/edit-question-dialog.component';
 import { Question } from 'src/app/models/question';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-partner-info-dialog',
@@ -128,8 +129,31 @@ openEditQuestionDialog(packageId: string, question: Question): void {
   });
 }
 
-
-
+removePackage(pkg) {
+  Swal.fire({
+    title: "Delete this Package?",
+    text: pkg.packageName,
+    icon: "warning",
+    showCancelButton: true,
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.value) {
+      this.partnerService.removePackage(pkg.id, this.partnerId).subscribe(
+        (res) => {
+          Swal.fire("Deleted", pkg.packageName + " Deleted", "success");
+          this.gePartnerPackage();
+        },
+        (error) => {
+          console.error("Error deleting package:", error);
+          Swal.fire("Error", "Failed to delete package", "error");
+        }
+      );
+    }
+  });
+}
 
 
 }

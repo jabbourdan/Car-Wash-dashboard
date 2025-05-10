@@ -179,3 +179,24 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(72, 180, 97, 0.4);
 }
+.remove-package-btn {
+  background-color: #dc3545; /* Red */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.remove-package-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.remove-package-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.4);
+}
