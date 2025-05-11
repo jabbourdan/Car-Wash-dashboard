@@ -9,6 +9,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Regions } from '../models/regions';
 import { Question } from '../models/question';
 import { ServiceProduct } from '../models/serviceProduct';
+import { PartnerPackage } from '../models/partnerPackage';
+import { ExtraPackageDetails } from '../models/extraPackageDetails';
 
 
 @Component({
@@ -104,35 +106,35 @@ removeQuestion(index: number) {
   const region = this.selectedRegion;
   const partnerId = this.data.partnerId;
 
-  const partnerPackage = {
-    id: crypto.randomUUID(),
-    countryCode: region.countryCode,
-    country: region.country,
-    city: region.city,
-    packageName: this.packageName,
-    currency: this.currency,
-    PrivateCars: this.privateCars,
-    VansOrSimilar: this.vansOrSimilar,
-    SUVs: this.suvs,
-    Caravans: this.caravans,
-    numberOfServices: this.numberOfServices,
-    vat: this.vat,
-    active: true,
-    regionDTOs: [region],
-    serviceProducts: this.selectedServices,
-    stockProducts: [],
-   questions: this.questions,
-    extraDetails: {
-      duration: this.duration,
-      packageDescription: this.packageDescription,
-      PrivateCars: this.privateCars,
-      VansOrSimilar: this.vansOrSimilar,
-      SUVs: this.suvs,
-      Caravans: this.caravans,
-      numberOfServices: this.numberOfServices
-    },
-    partnerId: partnerId
-  };
+  const partnerPackage = new PartnerPackage(
+      crypto.randomUUID(),
+      this.packageName,
+      this.vat,
+      region.country,
+      this.privateCars,
+      this.vansOrSimilar,
+      this.suvs,
+      this.caravans,
+      this.numberOfServices,
+      region.countryCode,
+      region.city,
+      true,
+      this.currency,
+      new ExtraPackageDetails(
+        this.duration,
+        this.packageDescription,
+        this.privateCars,
+        this.vansOrSimilar,
+        this.suvs,
+        this.caravans,
+        this.numberOfServices
+      ),
+      this.questions,
+      [region],
+      [], // stockProducts
+      this.selectedServices,
+      partnerId // partnerId
+    );
 
   this.service.addPartnerPackage(partnerId, partnerPackage).subscribe({
  next: (res) => {
