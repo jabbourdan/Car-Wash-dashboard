@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PartnerService } from 'src/app/services/partner.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Question } from 'src/app/models/question';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-question-dialog',
@@ -36,8 +37,14 @@ onSubmit(form: any): void {
     // Send the question as an array
     this.service.updateQuestion(this.partnerId,this.packageId, [this.question]).subscribe(
       (response) => {
-        console.log('Question updated successfully:', response);
-        this.dialogRef.close(response); // Close the dialog and return the updated response
+    Swal.fire({
+        title: 'Success!',
+        text: 'question was updated successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        this.dialogRef.close(response); // Close the dialog and return the new package
+      });
       },
       (error) => {
         console.error('Error updating question:', error);

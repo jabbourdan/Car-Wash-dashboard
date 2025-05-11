@@ -1,5 +1,5 @@
 import { ExtraPackageDetails } from "./extraPackageDetails";
-import { Product } from "./partnerpackage.model";
+import { Product } from "./product";
 import { Question } from "./question";
 import { Regions } from "./regions";
 

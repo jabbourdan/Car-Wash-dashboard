@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { PartnerService } from '../services/partner.service';
-import { PartnerPackage, PartnerPriceDTO, Question, RegionDto, ServiceProduct } from '../models/test';
 import { CommonModule } from '@angular/common';
 import { PartnerExtraDetails } from '../models/partnerExtraDetails';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Regions } from '../models/regions';
+import { Question } from '../models/question';
+import { ServiceProduct } from '../models/serviceProduct';
 
 
 @Component({
@@ -18,9 +20,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 })
 export class AddPartnerPackageAndQuestionsComponent implements OnInit {
-  regions: RegionDto[] = [];
+  regions: Regions[] = [];
   services: ServiceProduct[] = [];
-  selectedRegion: RegionDto = new RegionDto('', '', '', '');
+  selectedRegion: Regions = new Regions('', '', '', '');
   selectedServices: ServiceProduct[] = [];
 
 
@@ -68,7 +70,7 @@ showQuestionsSection = false;
     }
   }
 
-  fetchServicesForRegion(region: RegionDto): void {
+  fetchServicesForRegion(region: Regions): void {
     this.service.getServicesForRegion(region).subscribe(
       (res) => {
         this.services = res?.services?.map((s: any) => ServiceProduct.fromJson(s)) || [];

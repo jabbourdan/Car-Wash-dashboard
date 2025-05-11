@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, tap } from 'rxjs';
-import { PartnerPackage, RegionDto, ServiceProduct } from '../models/test';
+import { Regions } from '../models/regions';
 
 @Injectable({
   providedIn: 'root'
@@ -37,14 +37,14 @@ export class PartnerService {
     return this.http.post<any[]>(url, {}, {});
   }
 
-  getRegions(countryCode: string): Observable<RegionDto[]> {
+  getRegions(countryCode: string): Observable<Regions[]> {
     const params = new HttpParams().set('countryCode', countryCode);
     return this.http
-      .post<RegionDto[]>(`${this.regionApi}`, {}, { params })
+      .post<Regions[]>(`${this.regionApi}`, {}, { params })
       .pipe(tap((response) => console.log('Regions response:', response)));
   }
 
-  getServicesForRegion(region: RegionDto): Observable<any> {
+  getServicesForRegion(region: Regions): Observable<any> {
     const body = [
       {
         id: region.id,

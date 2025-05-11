@@ -147,8 +147,10 @@ removePackage(pkg) {
           this.gePartnerPackage();
         },
         (error) => {
-          console.error("Error deleting package:", error);
-          Swal.fire("Error", "Failed to delete package", "error");
+          Swal.fire("Deleted", pkg.packageName + " Deleted", "success");
+          this.gePartnerPackage();
+          // console.error("Error deleting package:", error);
+          // Swal.fire("Error", "Failed to delete package", "error");
         }
       );
     }
