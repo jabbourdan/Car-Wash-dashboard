@@ -24,4 +24,12 @@ Build a comprehensive dashboard for car wash operators to:
 ## 🚀 How to Run the Project Locally
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/jabbourdan/Admin-tem.git
+cd Admin-tem
 
+# 2. Install dependencies (use --legacy-peer-deps to avoid version conflicts)
+npm install --legacy-peer-deps
+
+# 3. Start the development server
+ng serve
