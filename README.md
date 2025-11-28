@@ -25,8 +25,8 @@ Build a comprehensive dashboard for car wash operators to:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/jabbourdan/Admin-tem.git
-cd Admin-tem
+git clone https://github.com/jabbourdan/Car-Wash-dashboard.git
+cd Car-Wash-dashboard
 
 # 2. Install dependencies (use --legacy-peer-deps to avoid version conflicts)
 npm install --legacy-peer-deps
